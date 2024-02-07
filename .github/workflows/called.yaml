@@ -7,12 +7,13 @@ on:
         type: string
 
 jobs:
-  called-job1:
+  Called Job1:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: Output `input1` value
+        run: |
           echo "----------"
-          echo input1 value is "$INPUT1"
+          echo "input1 value is $INPUT1"
           echo "----------"
         env:
           INPUT1: ${{ inputs.input1 }}

@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  caller-job1:
+  Caller Job1:
     uses: ./.github/workflows/called.yaml
     with:
       input1: ${{ matrix.input1 }}
