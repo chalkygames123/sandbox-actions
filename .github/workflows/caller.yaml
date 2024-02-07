@@ -10,11 +10,7 @@ on:
 
 jobs:
   job1:
-    steps:
-      - run: echo "job1 > step1"
-  job2:
-    needs:
-      - job1
+    runs-on: ubuntu-latest
     steps:
       - uses: ./.github/workflows/called.yaml
         with:

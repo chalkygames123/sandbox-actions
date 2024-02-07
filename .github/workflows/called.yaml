@@ -8,6 +8,7 @@ on:
 
 jobs:
   job1:
+    runs-on: ubuntu-latest
     steps:
       - run: echo "$INPUT1"
         env:
