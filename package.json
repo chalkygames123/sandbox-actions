@@ -2,5 +2,8 @@
 	"scripts": {
 		"build": "mkdir dist && touch stats.html",
 		"test": "[[ -d dist ]] && [[ -f stats.html ]]"
+	},
+	"engines": {
+		"node": "21.6.1"
 	}
 }
