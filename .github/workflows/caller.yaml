@@ -9,29 +9,6 @@ on:
       - main
 
 jobs:
-  caller-job1:
-    name: Caller Job 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Step 1
-        run: echo "Step 1"
-  caller-job2:
-    name: Caller Job 2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Step 2
-        run: echo "Step 2"
-  caller-job3:
-    name: Caller Job 3
-    runs-on: ubuntu-latest
-    steps:
-      - name: Step 3
-        run: echo "Step 3"
   deploy:
     name: Deploy
-    needs: [caller-job1, caller-job2, caller-job3]
     uses: ./.github/workflows/called.yaml
-    with:
-      environment:
-        - staging
-        - production

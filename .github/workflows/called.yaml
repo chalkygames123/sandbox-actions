@@ -2,19 +2,15 @@ name: Called Workflow
 
 on:
   workflow_call:
-    inputs:
-      environment:
-        type: string
 
 jobs:
   called-job1:
-    name: ${{ inputs.environment }}
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Output `environment` value
-        run: echo environment is "$environment"
-        env:
-          environment: ${{ inputs.environment }}
+      - run: echo Deploy"
     strategy:
       matrix:
-        environment: ${{ inputs.environment }}
+        environment:
+          - staging
+          - production
