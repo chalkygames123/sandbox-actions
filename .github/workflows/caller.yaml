@@ -10,8 +10,17 @@ on:
 
 jobs:
   Caller-Job1:
+    steps:
+      - name: Step 1
+        run: echo "Step 1"
   Caller-Job2:
+    steps:
+      - name: Step 2
+        run: echo "Step 2"
   Caller-Job3:
+    steps:
+      - name: Step 3
+        run: echo "Step 3"
   Call:
     needs: [Caller-Job1, Caller-Job2, Caller-Job3]
     strategy:
