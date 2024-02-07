@@ -5,6 +5,8 @@ on:
     inputs:
       input1:
         type: string
+      input2:
+        type: string
 
 jobs:
   called-job1:
@@ -15,3 +17,7 @@ jobs:
         run: echo input1 value is "$INPUT1"
         env:
           INPUT1: ${{ inputs.input1 }}
+      - name: Output `input2` value
+        run: echo input2 value is "$INPUT2"
+        env:
+          INPUT2: ${{ inputs.input2 }}
