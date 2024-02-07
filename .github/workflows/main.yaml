@@ -28,4 +28,4 @@ jobs:
     name: Deploy
     needs:
       - ci
-    uses: ./.github/workflows/deployment.yaml
+    uses: ./.github/workflows/deploy.yaml
