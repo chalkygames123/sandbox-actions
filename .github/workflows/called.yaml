@@ -6,15 +6,12 @@ on:
       input1:
         type: string
 
-env:
-  INPUT1: ${{ inputs.input1 }}
-
 jobs:
   called-job1:
-    name: '$INPUT1'
+    name: ${{ inputs.input1 }}
     runs-on: ubuntu-latest
-    env:
-      INPUT1: ${{ inputs.input1 }}
     steps:
       - name: Output `input1` value
         run: echo input1 value is "$INPUT1"
+        env:
+          INPUT1: ${{ inputs.input1 }}
