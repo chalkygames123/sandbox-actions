@@ -32,10 +32,7 @@ jobs:
     needs: [caller-job1, caller-job2, caller-job3]
     strategy:
       matrix:
-        input1:
-          - value 1
-          - value 2
-          - value 3
+        input1: value 1
       fail-fast: true
     uses: ./.github/workflows/called.yaml
     with:
