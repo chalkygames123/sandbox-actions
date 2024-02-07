@@ -12,7 +12,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - name: caller > job1 > step1
+      - run: echo "job1 > step1"
   job2:
     needs:
       - job1
