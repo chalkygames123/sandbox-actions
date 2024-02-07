@@ -10,9 +10,10 @@ on:
 
 jobs:
   Caller-Job1:
-    uses: ./.github/workflows/called.yaml
-    with:
-      input1: ${{ matrix.input1 }}
+  Caller-Job1:
+  Caller-Job1:
+  Call:
+    needs: [Caller-Job1, Caller-Job2, Caller-Job3]
     strategy:
       matrix:
         input1:
@@ -20,3 +21,6 @@ jobs:
           - value 2
           - value 3
       fail-fast: true
+    uses: ./.github/workflows/called.yaml
+    with:
+      input1: ${{ matrix.input1 }}
