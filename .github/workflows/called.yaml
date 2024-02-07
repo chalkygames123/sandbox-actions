@@ -8,9 +8,7 @@ on:
 
 jobs:
   job1:
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - run: echo "$INPUT1"
         env:
           INPUT1: ${{ inputs.input1 }}
