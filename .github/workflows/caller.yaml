@@ -14,12 +14,12 @@ jobs:
     steps:
       - name: Step 1
         run: echo "Step 1"
-  Caller-Job1:
+  Caller-Job2:
     runs-on: ubuntu-latest
     steps:
       - name: Step 2
         run: echo "Step 2"
-  Caller-Job1:
+  Caller-Job3:
     runs-on: ubuntu-latest
     steps:
       - name: Step 3
