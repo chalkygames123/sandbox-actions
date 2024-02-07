@@ -7,7 +7,7 @@ on:
         type: string
 
 jobs:
-  Called Job1:
+  Called-Job1:
     runs-on: ubuntu-latest
     steps:
       - name: Output `input1` value
