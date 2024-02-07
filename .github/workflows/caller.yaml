@@ -9,20 +9,27 @@ on:
       - main
 
 jobs:
-  Caller-Job1:
+  caller-job1:
+    name: Caller Job 1
+    runs-on: ubuntu-latest
     steps:
       - name: Step 1
         run: echo "Step 1"
-  Caller-Job2:
+  caller-job2:
+    name: Caller Job 2
+    runs-on: ubuntu-latest
     steps:
       - name: Step 2
         run: echo "Step 2"
-  Caller-Job3:
+  caller-job3:
+    name: Caller Job 3
+    runs-on: ubuntu-latest
     steps:
       - name: Step 3
         run: echo "Step 3"
-  Call:
-    needs: [Caller-Job1, Caller-Job2, Caller-Job3]
+  deploy:
+    name: Deploy
+    needs: [caller-job1, caller-job2, caller-job3]
     strategy:
       matrix:
         input1:
