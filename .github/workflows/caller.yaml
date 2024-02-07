@@ -1,4 +1,4 @@
-name: Caller
+name: Caller Workflow
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  called:
+  caller-job1:
     uses: ./.github/workflows/called.yaml
     with:
       input1: value of input1

@@ -1,4 +1,4 @@
-name: Called
+name: Called Workflow
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
         type: string
 
 jobs:
-  job1:
+  called-job1:
     runs-on: ubuntu-latest
     steps:
       - run: echo "$INPUT1"
