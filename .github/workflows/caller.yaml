@@ -12,4 +12,11 @@ jobs:
   caller-job1:
     uses: ./.github/workflows/called.yaml
     with:
-      input1: value of input1
+      input1: ${{ matrix.input1 }}
+    strategy:
+      matrix:
+        input1:
+          - value 1
+          - value 2
+          - value 3
+      fail-fast: true
