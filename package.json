@@ -1,0 +1,6 @@
+{
+	"scripts": {
+		"build": "mkdir dist && touch stats.html",
+		"test": "[[ -d dist ]] && [[ -f stats.html ]]"
+	}
+}

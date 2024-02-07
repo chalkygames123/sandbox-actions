@@ -1,0 +1,13 @@
+name: Deploy
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - run: echo Deploy $(ls -a)
