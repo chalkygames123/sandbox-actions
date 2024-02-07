@@ -10,4 +10,6 @@ on:
 
 jobs:
   called:
-    - uses: ./.github/workflows/called.yaml
+    uses: ./.github/workflows/called.yaml
+    with:
+      input1: value of input1
