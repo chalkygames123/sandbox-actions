@@ -3,21 +3,18 @@ name: Called Workflow
 on:
   workflow_call:
     inputs:
-      input1:
-        type: string
-      input2:
+      environment:
         type: string
 
 jobs:
   called-job1:
-    name: ${{ inputs.input1 }}
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
-      - name: Output `input1` value
-        run: echo input1 value is "$INPUT1"
+      - name: Output `environment` value
+        run: echo environment is "$environment"
         env:
-          INPUT1: ${{ inputs.input1 }}
-      - name: Output `input2` value
-        run: echo input2 value is "$INPUT2"
-        env:
-          INPUT2: ${{ inputs.input2 }}
+          environment: ${{ inputs.environment }}
+    strategy:
+      matrix:
+        environment: ${{ inputs.environment }}

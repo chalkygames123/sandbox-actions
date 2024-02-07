@@ -30,13 +30,8 @@ jobs:
   deploy:
     name: Deploy
     needs: [caller-job1, caller-job2, caller-job3]
-    strategy:
-      matrix:
-        input1:
-          - value 1
-        input2:
-          - value 1
-      fail-fast: true
     uses: ./.github/workflows/called.yaml
     with:
-      input1: ${{ matrix.input1 }}
+      environment:
+        - staging
+        - production
