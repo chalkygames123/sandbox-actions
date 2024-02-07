@@ -6,9 +6,12 @@ on:
       input1:
         type: string
 
+env:
+  INPUT1: ${{ inputs.input1 }}
+
 jobs:
   called-job1:
-    name: ${{ inputs.input1 }}
+    name: '$INPUT1'
     runs-on: ubuntu-latest
     env:
       INPUT1: ${{ inputs.input1 }}
