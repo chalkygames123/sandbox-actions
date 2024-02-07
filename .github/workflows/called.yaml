@@ -10,6 +10,9 @@ jobs:
   called-job1:
     runs-on: ubuntu-latest
     steps:
-      - run: echo input1 value is "$INPUT1"
+      - run: |
+          echo "----------"
+          echo input1 value is "$INPUT1"
+          echo "----------"
         env:
           INPUT1: ${{ inputs.input1 }}
