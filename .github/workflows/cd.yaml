@@ -1,4 +1,8 @@
-name: Main
+name: CD
+
+defaults:
+  run:
+    shell: bash
 
 on:
   pull_request:
@@ -12,8 +16,8 @@ on:
       - main
 
 jobs:
-  build-and-test:
-    name: Build and Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,20 +26,10 @@ jobs:
           cache: npm
           node-version-file: package.json
       - run: npm run build
-      - run: npm test
       - uses: actions/upload-artifact@v4
         with:
           path: |
             dist/
             stats.html
           if-no-files-found: error
-    strategy:
-      matrix:
-        environment:
-          - production
-      fail-fast: true
-  deploy:
-    name: Deploy
-    needs:
-      - build-and-test
-    uses: ./.github/workflows/deployment.yaml
+      - uses: ./.github/actions/deployment
