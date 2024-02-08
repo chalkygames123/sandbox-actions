@@ -19,7 +19,7 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build.yaml
-  deploy-to-production:
+  deploy:
     name: Deploy
     needs:
       - build
