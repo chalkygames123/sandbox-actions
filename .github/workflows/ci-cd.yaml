@@ -20,7 +20,7 @@ jobs:
     name: Build
     uses: ./.github/workflows/build.yaml
   deploy-to-production:
-    name: Deploy to production
+    name: Deploy
     needs:
       - build
     if: github.event_name == 'push'
