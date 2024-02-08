@@ -2,6 +2,11 @@ name: Main
 
 on:
   pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
   push:
     branches:
       - main
@@ -24,6 +29,11 @@ jobs:
             dist/
             stats.html
           if-no-files-found: error
+    strategy:
+      matrix:
+        environment:
+          - production
+      fail-fast: true
   deploy:
     name: Deploy
     needs:
