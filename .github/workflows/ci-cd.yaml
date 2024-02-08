@@ -16,25 +16,12 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version-file: package.json
-      - run: npm run build
-      - uses: actions/upload-artifact@v4
-        with:
-          path: |
-            dist/
-            stats.html
-          if-no-files-found: error
-  deploy:
-    name: Deploy
+  ci:
+    name: CI
+    uses: ./.github/workflows/build.yaml
+  cd:
+    name: CD
     needs:
-      - build
+      - ci
     if: github.event_name == 'push'
     uses: ./.github/workflows/deployment.yaml

@@ -12,8 +12,6 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - run: ls -Rla
       - uses: actions/checkout@v4
-      - run: ls -Rla
       - uses: actions/download-artifact@v4
-      - run: ls -Rla
+      - run: ls -al artifact/
