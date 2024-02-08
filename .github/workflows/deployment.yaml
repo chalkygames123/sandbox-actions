@@ -10,4 +10,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
-      - run: echo Deploy $(ls -a)
+      - run: echo Deploy $(ls -aR artifact)
