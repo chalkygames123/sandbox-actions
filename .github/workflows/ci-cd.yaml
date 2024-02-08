@@ -23,6 +23,11 @@ jobs:
     name: Deploy
     needs:
       - build
+    strategy:
+      matrix:
+        environment:
+          - production
+      fail-fast: true
     uses: ./.github/workflows/deployment.yaml
     with:
-      environment: production
+      environment: ${{ matrix.environment }}
