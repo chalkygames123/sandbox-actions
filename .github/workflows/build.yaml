@@ -2,10 +2,6 @@ name: Build
 
 on:
   workflow_call:
-    inputs:
-      environment:
-        required: true
-        type: string
 
 defaults:
   run:
@@ -13,9 +9,10 @@ defaults:
 
 jobs:
   build:
-    name: ${{ inputs.environment }}
+    name: Build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           cache: npm
