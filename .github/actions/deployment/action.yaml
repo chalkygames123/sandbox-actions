@@ -5,6 +5,5 @@ description: ''
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v4
     - run: echo ls -Rla
       shell: bash
