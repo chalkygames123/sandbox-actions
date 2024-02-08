@@ -12,11 +12,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment:
-      name: ${{ steps.deploy.outputs.environment }}
+      name: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-url }}
-    outputs:
-      environment: ${{ steps.deploy.outputs.environment }}
-      environment_url: ${{ steps.deploy.outputs.deployment-url }}
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
     steps:
@@ -25,9 +22,7 @@ jobs:
       - id: deploy
         run: |
           if [[ $ENVIRONMENT == 'production' ]]; then
-            echo "environment=production" >> "$GITHUB_OUTPUT
             echo "deployment-url=https://example.com" >> "$GITHUB_OUTPUT"
           else
-            echo "environment=preview" >> "$GITHUB_OUTPUT"
             echo "deployment-url=https://preview.example.com" >> "$GITHUB_OUTPUT"
           fi
