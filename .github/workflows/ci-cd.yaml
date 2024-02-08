@@ -18,11 +18,16 @@ defaults:
 jobs:
   build:
     name: Build
+    strategy:
+      matrix:
+        environment:
+          - production
+      fail-fast: true
     uses: ./.github/workflows/build.yaml
     with:
       environment: ${{ matrix.environment }}
-  deploy:
-    name: Deploy
+  deployment:
+    name: Deployment
     needs:
       - build
     strategy:

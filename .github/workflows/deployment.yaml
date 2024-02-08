@@ -12,7 +12,7 @@ defaults:
     shell: bash
 
 jobs:
-  deploy:
+  deployment:
     name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     environment:
