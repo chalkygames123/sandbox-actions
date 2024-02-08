@@ -3,9 +3,6 @@ name: Deployment
 on:
   workflow_call:
 
-env:
-  ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
-
 defaults:
   run:
     shell: bash
@@ -15,15 +12,19 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment:
-      name: ${{ env.ENVIRONMENT }}
+      name: ${{ steps.deploy.outputs.environment }}
       url: ${{ steps.deploy.outputs.deployment-url }}
+    env:
+      ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
     steps:
       - uses: actions/download-artifact@v4
       - run: ls -al artifact/
       - id: deploy
         run: |
           if [[ $ENVIRONMENT == 'production' ]]; then
+            echo "environment=production" >> "$GITHUB_OUTPUT
             echo "deployment-url=https://example.com" >> "$GITHUB_OUTPUT"
           else
+            echo "environment=preview" >> "$GITHUB_OUTPUT"
             echo "deployment-url=https://preview.example.com" >> "$GITHUB_OUTPUT"
           fi
