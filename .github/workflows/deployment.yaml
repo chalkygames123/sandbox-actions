@@ -12,7 +12,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
+      name: ${{ env.ENVIRONMENT }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
