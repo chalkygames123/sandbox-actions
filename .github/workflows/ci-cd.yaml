@@ -19,6 +19,8 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build.yaml
+    with:
+      environment: ${{ matrix.environment }}
   deploy:
     name: Deploy
     needs:
