@@ -8,14 +8,24 @@ defaults:
     shell: bash
 
 jobs:
-  deploy:
-    name: Deploy
+  determine-cloudflare-environment:
+    name: Determine Cloudflare Environment
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ env.ENVIRONMENT }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
+    outputs:
+      environment: ${{ steps.determine-cloudflare-environment.outputs.environment }}
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
+    steps:
+      - id: determine-cloudflare-environment
+        run: echo "environment=$ENVIRONMENT" >> "$GITHUB_ENV"
+  deploy:
+    name: Deploy
+    needs:
+      - determine-cloudflare-environment
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.determine-cloudflare-environment.outputs.environment }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/download-artifact@v4
       - run: ls -al artifact/
