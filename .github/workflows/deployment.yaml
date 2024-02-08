@@ -3,6 +3,9 @@ name: Deployment
 on:
   workflow_call:
 
+env:
+  ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
+
 defaults:
   run:
     shell: bash
@@ -14,8 +17,6 @@ jobs:
     environment:
       name: ${{ env.ENVIRONMENT }}
       url: ${{ steps.deploy.outputs.deployment-url }}
-    env:
-      ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
     steps:
       - uses: actions/download-artifact@v4
       - run: ls -al artifact/
