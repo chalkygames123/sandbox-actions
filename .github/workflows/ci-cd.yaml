@@ -24,8 +24,6 @@ jobs:
           - production
       fail-fast: true
     uses: ./.github/workflows/build.yaml
-    with:
-      environment: ${{ matrix.environment }}
   deploy:
     name: Deploy
     needs:
