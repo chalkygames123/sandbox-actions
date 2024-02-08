@@ -2,22 +2,25 @@ name: Deployment
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  production:
-    name: Production
+  deploy:
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     environment:
-      name: production
-      url: https://example.com
+      name: ${{ inputs.environment }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
       - run: ls -al artifact/
-      - run: echo "$MY_VAR"
-        env:
-          MY_VAR: ${{ vars.MY_VAR }}
+      - id: deploy
+        run: echo "deployment-url=https://example.com" >> "$GITHUB_OUTPUT"

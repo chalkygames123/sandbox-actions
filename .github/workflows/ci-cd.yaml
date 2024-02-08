@@ -23,5 +23,6 @@ jobs:
     name: Deploy
     needs:
       - build
-    if: github.event_name == 'push'
     uses: ./.github/workflows/deployment.yaml
+    with:
+      environment: production

@@ -2,14 +2,18 @@ name: Build
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  production:
-    name: Production
+  build:
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
