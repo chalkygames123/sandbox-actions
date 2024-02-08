@@ -16,12 +16,12 @@ on:
       - main
 
 jobs:
-  ci:
-    name: CI
+  build:
+    name: Build
     uses: ./.github/workflows/build.yaml
-  cd:
-    name: CD
+  deploy:
+    name: Deploy
     needs:
-      - ci
+      - build
     if: github.event_name == 'push'
     uses: ./.github/workflows/deployment.yaml
