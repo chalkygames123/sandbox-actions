@@ -5,5 +5,5 @@ description: ''
 runs:
   using: 'composite'
   steps:
-    - run: echo ls -Rla
+    - run: ls -Rla
       shell: bash
