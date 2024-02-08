@@ -26,8 +26,8 @@ jobs:
     uses: ./.github/workflows/build.yaml
     with:
       environment: ${{ matrix.environment }}
-  deployment:
-    name: Deployment
+  deploy:
+    name: Deploy
     needs:
       - build
     strategy:
