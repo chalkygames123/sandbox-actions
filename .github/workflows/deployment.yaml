@@ -14,6 +14,9 @@ jobs:
     environment:
       name: ${{ steps.deploy.outputs.environment }}
       url: ${{ steps.deploy.outputs.deployment-url }}
+    outputs:
+      environment: ${{ steps.deploy.outputs.environment }}
+      environment_url: ${{ steps.deploy.outputs.deployment-url }}
     env:
       ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
     steps:
