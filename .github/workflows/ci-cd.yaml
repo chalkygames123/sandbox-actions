@@ -1,9 +1,5 @@
 name: CI/CD
 
-defaults:
-  run:
-    shell: bash
-
 on:
   pull_request:
     types:
@@ -14,6 +10,10 @@ on:
   push:
     branches:
       - main
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
