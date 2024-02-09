@@ -2,39 +2,29 @@ name: Deployment
 
 on:
   workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  determine-environment:
-    name: Determine environment
-    runs-on: ubuntu-latest
-    outputs:
-      environment: ${{ steps.determine-environment.outputs.environment }}
-    env:
-      ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-    steps:
-      - id: determine-environment
-        run: echo "environment=$ENVIRONMENT" >> "$GITHUB_OUTPUT"
   deploy:
-    name: Deploy
-    needs:
-      - determine-environment
+    name: Deploy to ${{ inputs.environment }}
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.determine-environment.outputs.environment }}
+      name: ${{ inputs.environment }}
       url: ${{ steps.deploy.outputs.deployment-url }}
+    env:
+      ENVIRONMENT: ${{ inputs.environment }}
     steps:
+      - run: 'echo "environment: $ENVIRONMENT"'
       - uses: actions/download-artifact@v4
       - run: ls -al artifact/
       - id: deploy
-        run: |
-          echo "$ENVIRONMENT"
-
-          if [[ $ENVIRONMENT == 'production' ]]; then
-            echo "deployment-url=https://example.com" >> "$GITHUB_OUTPUT"
-          else
-            echo "deployment-url=https://preview.example.com" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+        env:
+          DEPLOYMENT_URL: ${{ inputs.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
