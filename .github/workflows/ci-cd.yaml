@@ -40,15 +40,20 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      url: ${{ steps.wrangler.outputs.deployment-url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
-      - run: |
-          echo DEBUG
-          echo "inputs.environment: $ENVIRONMENT"
+      - run: echo "[DEBUG] env.environment is ${{ env.environment }}"
+      - run: echo "[DEBUG] '$ENVIRONMENT' is $ENVIRONMENT"
       - uses: actions/download-artifact@v4
-      - id: wrangler
+      - id: deploy
         run: |
           echo "Deploying $(ls -al artifact/)"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
           DEPLOYMENT_URL: ${{ env.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
+      - run: |
+          echo "$COMMAND_OUTPUT"
+          echo "$DEPLOYMENT_URL"
+        env:
+          COMMAND_OUTPUT: ${{ steps.deploy.outputs.command-output }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
