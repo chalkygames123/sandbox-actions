@@ -22,6 +22,8 @@ jobs:
       - uses: actions/download-artifact@v4
   deploy:
     name: Deploy ${{ inputs.environment }}
+    needs:
+      - download-artifact
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environment }}

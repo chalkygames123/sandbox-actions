@@ -18,7 +18,9 @@ jobs:
     env:
       ENVIRONMENT: ${{ inputs.environment }}
     steps:
-      - run: 'echo "DEBUG: inputs.environment: $ENVIRONMENT"'
+      - run: |
+          echo DEBUG
+          'echo "inputs.environment: $ENVIRONMENT"'
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -32,6 +34,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # - uses: actions/setup-node@v4
+      - run: ls -al
+      - uses: actions/checkout@v4
+      - run: ls -al
       - run: npm run build
   upload-artifact:
     name: Upload Artifact
