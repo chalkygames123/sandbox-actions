@@ -9,7 +9,7 @@ defaults:
 
 jobs:
   determine-environment:
-    name: Determine target environment
+    name: Determine environment
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.determine-environment.outputs.environment }}
@@ -31,10 +31,10 @@ jobs:
       - run: ls -al artifact/
       - id: deploy
         run: |
+          echo "$ENVIRONMENT"
+
           if [[ $ENVIRONMENT == 'production' ]]; then
             echo "deployment-url=https://example.com" >> "$GITHUB_OUTPUT"
-            echo "$GITHUB_OUTPUT"
           else
             echo "deployment-url=https://preview.example.com" >> "$GITHUB_OUTPUT"
-            echo "$GITHUB_OUTPUT"
           fi
