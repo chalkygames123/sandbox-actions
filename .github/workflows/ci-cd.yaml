@@ -43,7 +43,7 @@ jobs:
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - run: echo "[DEBUG] env.environment is ${{ env.environment }}"
-      - run: echo "[DEBUG] '$ENVIRONMENT' is $ENVIRONMENT"
+      - run: echo "[DEBUG] \$ENVIRONMENT is $ENVIRONMENT"
       - uses: actions/download-artifact@v4
       - id: deploy
         run: |
