@@ -47,8 +47,8 @@ jobs:
       - uses: actions/download-artifact@v4
       - id: deploy
         run: |
-          echo "Deploying $(ls -al artifact/)"
-          echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+          echo "Deploying…"
+          echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_ENV"
         env:
           DEPLOYMENT_URL: ${{ env.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
       - run: |
