@@ -9,12 +9,12 @@ defaults:
 
 jobs:
   determine-cloudflare-environment:
-    name: Determine Cloudflare Environment
+    name: Determine target environment
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.determine-cloudflare-environment.outputs.environment }}
     env:
-      ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
+      ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
     steps:
       - id: determine-cloudflare-environment
         run: echo "environment=$ENVIRONMENT" >> "$GITHUB_OUTPUT"
