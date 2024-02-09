@@ -1,4 +1,4 @@
-name: Build
+name: Building
 
 on:
   workflow_call:
@@ -12,19 +12,33 @@ defaults:
     shell: bash
 
 jobs:
-  build:
-    name: Build for ${{ inputs.environment }}
+  bootstrap:
+    name: Bootstrap
     runs-on: ubuntu-latest
     env:
       ENVIRONMENT: ${{ inputs.environment }}
     steps:
-      - run: 'echo "environment: $ENVIRONMENT"'
+      - run: 'echo "DEBUG: inputs.environment: $ENVIRONMENT"'
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           cache: npm
           node-version-file: package.json
+      - run: npm ci
+  build:
+    name: Build ${{ inputs.environment }}
+    needs:
+      - bootstrap
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/setup-node@v4
       - run: npm run build
+  upload-artifact:
+    name: Upload Artifact
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/upload-artifact@v4
         with:
           path: |

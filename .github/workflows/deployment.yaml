@@ -12,18 +12,22 @@ defaults:
     shell: bash
 
 jobs:
-  deploy:
-    name: Deploy to ${{ inputs.environment }}
+  download-artifact:
+    name: Download Artifact
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ inputs.environment }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
     env:
       ENVIRONMENT: ${{ inputs.environment }}
     steps:
-      - run: 'echo "environment: $ENVIRONMENT"'
+      - run: 'echo "DEBUG: inputs.environment: $ENVIRONMENT"'
       - uses: actions/download-artifact@v4
-      - id: deploy
+  deploy:
+    name: Deploy ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ steps.wrangler.outputs.deployment-url }}
+    steps:
+      - id: wrangler
         run: |
           echo "Deploying $(ls -al artifact/)"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
