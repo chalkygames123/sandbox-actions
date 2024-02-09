@@ -23,8 +23,9 @@ jobs:
     steps:
       - run: 'echo "environment: $ENVIRONMENT"'
       - uses: actions/download-artifact@v4
-      - run: ls -al artifact/
       - id: deploy
-        run: echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "Deploying $(ls -al artifact/)"
+          echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
           DEPLOYMENT_URL: ${{ inputs.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
