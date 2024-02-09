@@ -18,10 +18,12 @@ jobs:
     env:
       ENVIRONMENT: ${{ inputs.environment }}
     steps:
-      - run: 'echo "DEBUG: inputs.environment: $ENVIRONMENT"'
+      - run: |
+          echo DEBUG
+          echo "inputs.environment: $ENVIRONMENT"
       - uses: actions/download-artifact@v4
   deploy:
-    name: Deploy ${{ inputs.environment }}
+    name: Deploy
     needs:
       - download-artifact
     runs-on: ubuntu-latest
