@@ -9,7 +9,7 @@ on:
       - reopened
   push:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
 
 defaults:
   run:
