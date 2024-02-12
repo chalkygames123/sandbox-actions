@@ -46,14 +46,8 @@ jobs:
       - run: echo "[DEBUG] \$ENVIRONMENT is $ENVIRONMENT"
       - uses: actions/download-artifact@v4
       - id: deploy
-        run: |
-          echo "Deploying…"
-          echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_ENV"
+        run: echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> "$GITHUB_ENV"
         env:
           DEPLOYMENT_URL: ${{ env.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
       - run: |
-          echo "$COMMAND_OUTPUT"
           echo "$DEPLOYMENT_URL"
-        env:
-          COMMAND_OUTPUT: ${{ steps.deploy.outputs.command-output }}
-          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
