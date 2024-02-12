@@ -12,7 +12,6 @@ on:
       - main
 
 env:
-  ARTIFACT_NAME: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
   ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
 
 defaults:
@@ -33,7 +32,7 @@ jobs:
       - run: npm run build
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ARTIFACT_NAME }}
+          name: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
           path: |
             dist/
             stats.html
@@ -47,10 +46,12 @@ jobs:
       name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
-      - uses: actions/download-artifact@v4
+      - id: download-artifact
+        uses: actions/download-artifact@v4
       - id: deploy
         run: |
-          echo "Deploying $(echo "${(j:, :)${(f)$(ls $ARTIFACT_NAME)}}" | sed -E 's/(.*), /\1 and /') to $ENVIRONMENT"
+          echo "Deploying $(echo "${(j:, :)${(f)$(ls $DOWNLOAD_PATH)}}" | sed -E 's/(.*), /\1 and /') to $ENVIRONMENT"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
+          DOWNLOAD_PATH: ${{ steps.download-artifact.outputs.download-path }}
           DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
