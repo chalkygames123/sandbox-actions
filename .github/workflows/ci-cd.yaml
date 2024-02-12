@@ -34,7 +34,7 @@ jobs:
         with:
           name: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
           path: |
-            dist/*
+            dist/
             stats.html
           if-no-files-found: error
   deployment:

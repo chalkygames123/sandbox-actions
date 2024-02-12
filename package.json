@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"build": "mkdir dist && touch stats.html"
+		"build": "mkdir dist && touch dist/index.html && touch stats.html"
 	},
 	"engines": {
 		"node": "21.6.1"
