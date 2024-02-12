@@ -12,6 +12,7 @@ on:
       - main
 
 env:
+  ARTIFACT_NAME: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
   ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
 
 defaults:
@@ -32,7 +33,7 @@ jobs:
       - run: npm run build
       - uses: actions/upload-artifact@v4
         with:
-          name: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: |
             dist/
             stats.html
@@ -49,7 +50,7 @@ jobs:
       - uses: actions/download-artifact@v4
       - id: deploy
         run: |
-          echo "Deploying to $ENVIRONMENT"
+          echo "Deploying $(echo "${(j:, :)${(f)$(ls $ARTIFACT_NAME)}}" | sed -E 's/(.*), /\1 and /') to $ENVIRONMENT"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
           DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
