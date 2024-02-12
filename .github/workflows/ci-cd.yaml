@@ -46,12 +46,12 @@ jobs:
       name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
-      - id: download-artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
       - id: deploy
         run: |
-          echo "Deploying $(ls $DOWNLOAD_PATH)"
+          echo "Deploying $(ls)"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
-          DOWNLOAD_PATH: ${{ steps.download-artifact.outputs.download-path }}
           DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
