@@ -19,8 +19,8 @@ defaults:
     shell: bash
 
 jobs:
-  building:
-    name: Building
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,10 +37,10 @@ jobs:
             dist/
             stats.html
           if-no-files-found: error
-  deployment:
-    name: Deployment
+  deploy:
+    name: Deploy
     needs:
-      - building
+      - build
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
