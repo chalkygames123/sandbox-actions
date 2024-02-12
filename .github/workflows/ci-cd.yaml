@@ -51,7 +51,7 @@ jobs:
           merge-multiple: true
       - id: deploy
         run: |
-          echo "Deploying $(ls)"
+          tree -aF -I '.git/'
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
           DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
