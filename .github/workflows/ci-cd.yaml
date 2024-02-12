@@ -43,7 +43,7 @@ jobs:
       - building
     runs-on: ubuntu-latest
     environment:
-      name: ${{ env.ENVIRONMENT }}
+      name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - run: ls -al
@@ -54,7 +54,7 @@ jobs:
           echo "Deploying to $ENVIRONMENT"
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
-          DEPLOYMENT_URL: ${{ env.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
+          DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
       - run: echo "Deployment URL is $DEPLOYMENT_URL"
         env:
           DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
