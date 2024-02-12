@@ -11,6 +11,9 @@ on:
     branches:
       - main
 
+env:
+  ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
+
 defaults:
   run:
     shell: bash
@@ -29,6 +32,7 @@ jobs:
       - run: npm run build
       - uses: actions/upload-artifact@v4
         with:
+          name: artifact-${{ env.ENVIRONMENT }}-${{ github.run_id }}
           path: |
             dist/
             stats.html
@@ -39,15 +43,18 @@ jobs:
       - building
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
+      name: ${{ env.ENVIRONMENT }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
-      - run: echo "[DEBUG] env.environment is ${{ env.environment }}"
-      - run: echo "[DEBUG] \$ENVIRONMENT is $ENVIRONMENT"
+      - run: ls -al
       - uses: actions/download-artifact@v4
+      - run: ls -al
       - id: deploy
-        run: echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> "$GITHUB_ENV"
+        run: |
+          echo "Deploying to $ENVIRONMENT"
+          echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
           DEPLOYMENT_URL: ${{ env.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
-      - run: |
-          echo "$DEPLOYMENT_URL"
+      - run: echo "Deployment URL is $DEPLOYMENT_URL"
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
