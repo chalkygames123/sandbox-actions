@@ -47,8 +47,6 @@ jobs:
       url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
       - id: deploy
         run: |
           tree -aF -I '.git/'
