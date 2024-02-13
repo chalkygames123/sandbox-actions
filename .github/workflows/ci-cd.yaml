@@ -53,4 +53,4 @@ jobs:
           tree -aF -I '.git/'
           echo "deployment-url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
         env:
-          DEPLOYMENT_URL: ${{ env.ENVIRONMENT == 'production' && 'https://example.com' || 'https://preview.example.com' }}
+          DEPLOYMENT_URL: ${{ needs.build.outputs.environment == 'production' && 'https://example.com' || 'https://preview.example.com' }}
