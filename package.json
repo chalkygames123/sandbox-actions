@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"build": "mkdir dist && touch dist/index.html && touch stats.html"
+		"check": "",
+		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\""
 	},
 	"engines": {
 		"node": "21.6.1"
