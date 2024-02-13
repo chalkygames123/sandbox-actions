@@ -56,4 +56,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           environment: ${{ needs.build.outputs.environment }}
-          command: pages deploy dist --env=${{ needs.build.outputs.environment }} --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
+          command: pages deploy dist --project-name ${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch ${{ github.ref_name }}
