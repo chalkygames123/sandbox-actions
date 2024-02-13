@@ -41,6 +41,9 @@ jobs:
           if-no-files-found: error
   deploy:
     name: Deploy
+    permissions:
+      contents: read
+      deployments: write
     needs:
       - build
     runs-on: ubuntu-latest
