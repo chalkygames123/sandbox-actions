@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ needs.build.outputs.environment }}
-      url: ${{ steps.deploy.outputs.url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/download-artifact@v4
         with:
