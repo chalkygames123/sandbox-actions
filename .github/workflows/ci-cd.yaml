@@ -7,6 +7,8 @@ on:
       - edited
       - synchronize
       - reopened
+    branches:
+      - main
   push:
     branches:
       - main
@@ -43,21 +45,27 @@ jobs:
             dist/
             stats.html
           if-no-files-found: error
+    timeout-minutes: 5
   deploy:
     name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
     needs:
       - build
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ needs.build.outputs.environment }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      - id: deploy
-        uses: cloudflare/wrangler-action@v3
+      - id: pages
+        uses: unlike-ltd/github-actions-cloudflare-pages@v1
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          environment: ${{ needs.build.outputs.environment }}
-          command: pages deploy dist --project-name ${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch ${{ github.ref_name }}
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: ${{ needs.build.outputs.environment }}
+    timeout-minutes: 5

@@ -1,0 +1,31 @@
+name: Delete Deployments
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  delete-deployments:
+    name: Delete Deployments
+    permissions:
+      contents: read
+      deployments: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: unlike-ltd/github-actions-cloudflare-pages@v1
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: 'preview'
+    timeout-minutes: 5
