@@ -15,6 +15,7 @@ jobs:
   delete-deployments:
     name: Delete Deployments
     permissions:
+      actions: read # required in private repositories
       contents: read
       deployments: write
       pull-requests: write
