@@ -61,7 +61,7 @@ jobs:
         with:
           path: ${{ steps.set-node-modules-cache-path.outputs.node-modules-cache-path }}
           key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
-      - if: steps.cache.outputs.cache-hit != true
+      - if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - run: npm run build
       - id: set-build-artifact-name
