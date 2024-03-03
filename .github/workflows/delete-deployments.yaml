@@ -1,4 +1,4 @@
-name: Delete Deployments
+name: Delete deployments
 
 on:
   pull_request:
@@ -13,14 +13,19 @@ concurrency:
 
 jobs:
   delete-deployments:
-    name: Delete Deployments
+    name: Delete deployments
     permissions:
-      actions: read # required in private repositories
+      actions: read # required in private repositories by the unlike-ltd/github-actions-cloudflare-pages action
       contents: read
-      deployments: write
-      pull-requests: write
+      deployments: write # required by unlike-ltd/github-actions-cloudflare-pages
+      pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
     runs-on: ubuntu-latest
     steps:
+      - name: Check if required variables are defined
+        run: |
+          echo "CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?secret is not defined}"
+          echo "CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID:?configuration variable is not defined}"
+          echo "CLOUDFLARE_PROJECT_NAME: ${CLOUDFLARE_PROJECT_NAME:?configuration variable is not defined}"
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
