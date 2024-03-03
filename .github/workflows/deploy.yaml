@@ -30,7 +30,7 @@ defaults:
     shell: bash
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.job }}-${{ inputs.environment }}
+  group: ${{ github.workflow }}-${{ inputs.environment }}
 
 jobs:
   deploy:
