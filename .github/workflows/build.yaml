@@ -104,7 +104,7 @@ jobs:
   deploy:
     name: Deploy
     permissions:
-      actions: read # required by unlike-ltd/github-actions-cloudflare-pages
+      actions: read # required in private repositories by unlike-ltd/github-actions-cloudflare-pages
       contents: read
       deployments: write # required by unlike-ltd/github-actions-cloudflare-pages
       pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
