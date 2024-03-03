@@ -44,7 +44,7 @@ jobs:
           echo "$GITHUB_EVENT_NAME"
           echo "$GITHUB_EVENT_CHANGES_BASE_REF"
         env:
-          GITHUB_EVENT_CHANGES_BASE_REF: ${{ toJson(github.event.changes.base.ref) }}
+          GITHUB_EVENT_CHANGES_BASE_REF: ${{ github.event.changes.base.ref }}
       - uses: actions/checkout@v4
       - id: set-environment
         name: Set environment
