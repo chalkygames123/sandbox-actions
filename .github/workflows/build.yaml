@@ -109,7 +109,7 @@ jobs:
       pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
     needs:
       - build
-    if: inputs.force-deploy || needs.build.outputs.src-changed == true || needs.build.outputs.workflows-changed == true
+    if: inputs.force-deploy || needs.build.outputs.src-changed == 'true' || needs.build.outputs.workflows-changed == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.build.outputs.environment }}
