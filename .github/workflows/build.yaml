@@ -9,10 +9,10 @@ on:
       - reopened
       - synchronize
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
   push:
     branches:
-      - ${{ github.event.repository.default_branch }}
+      - main
   workflow_dispatch:
     inputs:
       force-deploy:
