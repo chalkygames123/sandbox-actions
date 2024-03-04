@@ -31,25 +31,19 @@ jobs:
     name: Prepare
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ steps.set-environment.outputs.environment }}
-      node-modules-cache-path: ${{ steps.set-node-modules-cache-path.outputs.node-modules-cache-path }}
-      node-modules-cache-key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
+      environment: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
+      node-modules-cache-path: '**/node_modules/'
+      node-modules-cache-key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
       src-changed: ${{ steps.filter.outputs.src }}
       workflows-changed: ${{ steps.filter.outputs.workflows }}
     steps:
-      - id: set-environment
-        name: Set environment
-        run: echo "environment=$ENVIRONMENT" >> "$GITHUB_OUTPUT"
+      - run: |
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo "GITHUB_EVENT_CHANGES_BASE_REF: $GITHUB_EVENT_CHANGES_BASE_REF"
+          echo "GITHUB_CONTEXT: $GITHUB_CONTEXT"
         env:
-          ENVIRONMENT: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-
-      - id: set-node-modules-cache-path
-        name: Set node_modules cache path
-        run: echo "node-modules-cache-path=**/node_modules/" >> "$GITHUB_OUTPUT"
-
-      - id: set-node-modules-cache-key
-        name: Set node_modules cache key
-        run: echo "node-modules-cache-key=$RUNNER_OS-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
+          GITHUB_EVENT_CHANGES_BASE_REF: ${{ github.event.changes.base.ref }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
 
       - uses: actions/checkout@v4
 
