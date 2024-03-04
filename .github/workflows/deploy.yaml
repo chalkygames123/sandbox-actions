@@ -9,6 +9,7 @@ on:
   workflow_call:
     inputs:
       environment:
+        default: preview
         required: true
         type: string
       build-artifact-name:
@@ -50,5 +51,5 @@ jobs:
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           directory: ${{ inputs.build-artifact-download-path }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-environment: ${{ inputs.environment || 'preview' }}
+          github-environment: ${{ inputs.environment }}
     timeout-minutes: 5
