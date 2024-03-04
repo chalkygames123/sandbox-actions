@@ -30,6 +30,9 @@ concurrency:
 jobs:
   prepare:
     name: Prepare
+    permissions:
+      contents: read
+      pull-requests: read # required in private repositories by dorny/paths-filter
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
@@ -67,12 +70,10 @@ jobs:
               - tsconfig.json
             workflows:
               - .github/workflows/deploy.yaml
+    timeout-minutes: 5
 
   build:
     name: Build
-    permissions:
-      contents: read
-      pull-requests: read # required by dorny/paths-filter
     needs:
       - prepare
     uses: ./.github/workflows/build.yaml

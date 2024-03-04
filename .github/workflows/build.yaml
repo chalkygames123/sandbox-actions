@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   build:
-    name: ${{ inputs.environment}}
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
