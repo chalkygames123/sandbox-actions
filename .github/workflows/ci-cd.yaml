@@ -5,6 +5,7 @@ on:
     types:
       - opened
       - edited
+      - closed
       - reopened
       - synchronize
     branches:
@@ -33,7 +34,7 @@ jobs:
     outputs:
       environment: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
       node-modules-cache-path: '**/node_modules/'
-      node-modules-cache-key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+      node-modules-cache-key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
       src-changed: ${{ steps.filter.outputs.src }}
       workflows-changed: ${{ steps.filter.outputs.workflows }}
     steps:
@@ -44,6 +45,10 @@ jobs:
         env:
           GITHUB_EVENT_CHANGES_BASE_REF: ${{ github.event.changes.base.ref }}
           GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      - id: set-node-modules-cache-key
+        name: Set node_modules cache key
+        run: echo "node-modules-cache-key=$RUNNER_OS-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v4
 
@@ -91,8 +96,6 @@ jobs:
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.prepare.outputs.environment }}
-      node-modules-cache-path: ${{ needs.prepare.outputs.node-modules-cache-path }}
-      node-modules-cache-key: ${{ needs.prepare.outputs.node-modules-cache-key }}
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
       build-artifact-download-dir: ${{ needs.build.outputs.build-artifact-download-dir }}
     secrets: inherit

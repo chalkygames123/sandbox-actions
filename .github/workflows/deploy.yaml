@@ -6,12 +6,6 @@ on:
       environment:
         required: true
         type: string
-      node-modules-cache-path:
-        required: true
-        type: string
-      node-modules-cache-key:
-        required: true
-        type: string
       build-artifact-name:
         required: true
         type: string
