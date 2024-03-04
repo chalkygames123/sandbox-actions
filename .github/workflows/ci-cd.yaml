@@ -32,6 +32,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read # required in private repositories by dorny/paths-filter
+    if: github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.base.ref.from == ''
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
@@ -88,10 +89,23 @@ jobs:
               - .github/workflows/deploy.yaml
     timeout-minutes: 5
 
+  check:
+    name: Check
+    needs:
+      - prepare
+    if: github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.base.ref.from == ''
+    uses: ./.github/workflows/check.yaml
+    with:
+      node-modules-cache-path: ${{ needs.prepare.outputs.node-modules-cache-path }}
+      node-modules-cache-key: ${{ needs.prepare.outputs.node-modules-cache-key }}
+    secrets: inherit
+
   build:
     name: Build
     needs:
       - prepare
+      - check
+    if: github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.base.ref.from == ''
     uses: ./.github/workflows/build.yaml
     with:
       environment: ${{ needs.prepare.outputs.environment }}
@@ -109,7 +123,7 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.src-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
+    if: github.event_name != 'pull_request' || github.event.action != 'edited' || github.event.changes.base.ref.from == '' || inputs.force-deploy || needs.prepare.outputs.src-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.prepare.outputs.environment }}
