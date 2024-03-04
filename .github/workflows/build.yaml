@@ -13,8 +13,8 @@ on:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
-      build-artifact-download-dir:
-        description: The directory where the build artifact is downloaded
+      build-artifact-download-path:
+        description: The path to the directory where the build artifact is downloaded
         value: dist/
 
 defaults:
