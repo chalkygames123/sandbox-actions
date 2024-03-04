@@ -10,7 +10,6 @@ on:
     inputs:
       environment:
         default: preview
-        required: true
         type: string
       build-artifact-name:
         required: true
