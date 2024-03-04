@@ -39,7 +39,7 @@ jobs:
 
       - id: set-node-modules-cache-key
         name: Set node_modules cache key
-        run: echo "node-modules-cache-key=$RUNNER_OS-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
+        run: echo "node-modules-cache-key=node-modules-cache-$RUNNER_OS-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
 
       - id: filter
         if: inputs.force-deploy == false

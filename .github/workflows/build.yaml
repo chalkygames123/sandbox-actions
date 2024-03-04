@@ -49,7 +49,7 @@ jobs:
 
       - id: set-build-artifact-name
         name: Set build artifact name
-        run: echo "build-artifact-name=run-$GITHUB_RUN_ID-build-artifact" >> "$GITHUB_OUTPUT"
+        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v4
         with:
