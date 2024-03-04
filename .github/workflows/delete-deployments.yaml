@@ -22,6 +22,9 @@ defaults:
   run:
     shell: bash
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   deploy:
     name: ${{ inputs.environment}}
