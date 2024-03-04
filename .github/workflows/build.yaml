@@ -3,9 +3,6 @@ name: Build
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
       node-modules-cache-path:
         required: true
         type: string
@@ -26,7 +23,7 @@ defaults:
 
 jobs:
   build:
-    name: ${{ inputs.environment }}
+    name: Build
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
@@ -52,9 +49,7 @@ jobs:
 
       - id: set-build-artifact-name
         name: Set build artifact name
-        run: echo "build-artifact-name=run-$GITHUB_RUN_ID-$ENVIRONMENT-build-artifact" >> "$GITHUB_OUTPUT"
-        env:
-          ENVIRONMENT: ${{ inputs.environment }}
+        run: echo "build-artifact-name=run-$GITHUB_RUN_ID-build-artifact" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -64,7 +59,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: run-${{ github.run_id }}-${{ inputs.environment }}-stats-artifact
+          name: run-${{ github.run_id }}-stats-artifact
           path: stats.html
           if-no-files-found: error
     timeout-minutes: 5
