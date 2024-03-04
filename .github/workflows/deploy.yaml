@@ -24,7 +24,7 @@ defaults:
 
 jobs:
   deploy:
-    name: ${{ inputs.environment || 'preview' }}
+    name: ${{ github.event_name == 'pull_request' && 'Delete deployments' || 'Deploy' }}
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
