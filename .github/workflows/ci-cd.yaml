@@ -5,11 +5,10 @@ on:
     types:
       - opened
       - edited
-      - closed
       - reopened
       - synchronize
-    branches:
-      - main
+    # branches:
+    #   - main
   push:
     branches:
       - main
@@ -41,19 +40,36 @@ jobs:
       src-changed: ${{ steps.filter.outputs.src }}
       workflows-changed: ${{ steps.filter.outputs.workflows }}
     steps:
-      - run: |
-          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
-          echo "GITHUB_EVENT_CHANGES_BASE_REF: $GITHUB_EVENT_CHANGES_BASE_REF"
-          echo "GITHUB_CONTEXT: $GITHUB_CONTEXT"
+      - name: Dump GitHub context
         env:
-          GITHUB_EVENT_CHANGES_BASE_REF: ${{ github.event.changes.base.ref }}
           GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
+
+      - uses: actions/checkout@v4
 
       - id: set-node-modules-cache-key
         name: Set node_modules cache key
         run: echo "node-modules-cache-key=$RUNNER_OS-node-modules-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/checkout@v4
 
       - id: filter
         if: inputs.force-deploy == false
