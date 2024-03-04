@@ -5,11 +5,10 @@ on:
     types:
       - opened
       - edited
-      - closed
       - reopened
       - synchronize
-    branches:
-      - main
+    # branches:
+    #   - main
   push:
     branches:
       - main
