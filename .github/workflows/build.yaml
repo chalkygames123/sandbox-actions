@@ -59,7 +59,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: run-${{ github.run_id }}-stats-artifact
+          name: stats-artifact-run-${{ github.run_id }}
           path: stats.html
           if-no-files-found: error
     timeout-minutes: 5
