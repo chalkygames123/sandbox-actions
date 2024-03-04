@@ -86,6 +86,7 @@ jobs:
       contents: read
       deployments: write # required by unlike-ltd/github-actions-cloudflare-pages
       pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
+      statuses: write # required by unlike-ltd/github-actions-cloudflare-pages
     needs:
       - prepare
       - build
