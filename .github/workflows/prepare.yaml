@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       force-deploy:
-        default: false
         type: boolean
     outputs:
       environment:
@@ -43,7 +42,7 @@ jobs:
         run: echo "node-modules-cache-key=node-modules-cache-$RUNNER_OS-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
 
       - id: filter
-        if: inputs.force-deploy == false
+        if: '!inputs.force-deploy'
         uses: dorny/paths-filter@v3
         with:
           filters: |
