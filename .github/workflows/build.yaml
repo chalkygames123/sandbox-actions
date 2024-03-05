@@ -65,8 +65,9 @@ jobs:
       - name: Move build artifact
         run: |
           mkdir -p "$BUILD_ARTIFACT_PARENT_PATH"
-          mv dist/ "$BUILD_ARTIFACT_PARENT_PATH"
+          mv "$BUILD_ARTIFACT_PATH" "$BUILD_ARTIFACT_PARENT_PATH"
         env:
+          BUILD_ARTIFACT_PATH: ${{ steps.set-build-artifact-path.outputs.build-artifact-path }}
           BUILD_ARTIFACT_PARENT_PATH: ${{ steps.set-build-artifact-parent-path.outputs.build-artifact-parent-path }}
 
       - uses: actions/upload-artifact@v4
