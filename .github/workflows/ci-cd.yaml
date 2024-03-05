@@ -28,7 +28,7 @@ jobs:
       pull-requests: read
     uses: ./.github/workflows/prepare.yaml
     with:
-      force-deploy: ${{ inputs.force-deploy }}
+      force-deploy: ${{ fromJSON(inputs.force-deploy) }}
     secrets: inherit
 
   check:
