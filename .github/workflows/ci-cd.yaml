@@ -10,7 +10,6 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy:
-        default: false
         description: 'Force deployment'
         type: boolean
 
@@ -26,37 +25,11 @@ jobs:
     name: Prepare
     permissions:
       contents: read
-      pull-requests: read # required in private repositories by dorny/paths-filter
-    runs-on: ubuntu-latest
-    outputs:
-      environment: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      node-modules-cache-path: '**/node_modules/'
-      node-modules-cache-key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
-      src-changed: ${{ steps.filter.outputs.src }}
-      workflows-changed: ${{ steps.filter.outputs.workflows }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - id: set-node-modules-cache-key
-        name: Set node_modules cache key
-        run: echo "node-modules-cache-key=node-modules-cache-$RUNNER_OS-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
-
-      - id: filter
-        if: inputs.force-deploy == false
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            src:
-              - functions/**
-              - public/**
-              - astro.config.js
-              - src/**
-              - package-lock.json
-              - package.json
-              - tsconfig.json
-            workflows:
-              - .github/workflows/deploy.yaml
-    timeout-minutes: 5
+      pull-requests: read
+    uses: ./.github/workflows/prepare.yaml
+    with:
+      force-deploy: ${{ inputs.force-deploy }}
+    secrets: inherit
 
   check:
     name: Check
@@ -81,10 +54,15 @@ jobs:
 
   deploy:
     name: Deploy
+    permissions:
+      actions: read
+      contents: read
+      deployments: write
+      pull-requests: write
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.src-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
+    if: inputs.force-deploy || needs.prepare.outputs.build-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.prepare.outputs.environment }}

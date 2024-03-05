@@ -25,11 +25,6 @@ defaults:
 jobs:
   deploy:
     name: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && 'Delete deployments' || 'Deploy' }}
-    permissions:
-      actions: read # required in private repositories by unlike-ltd/github-actions-cloudflare-pages
-      contents: read
-      deployments: write # required by unlike-ltd/github-actions-cloudflare-pages
-      pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
