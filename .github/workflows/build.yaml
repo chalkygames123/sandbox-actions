@@ -13,9 +13,6 @@ on:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
-      build-artifact-download-path:
-        description: The path to the directory where the build artifact should be downloaded
-        value: ${{ jobs.build.outputs.build-artifact-download-path }}
 
 defaults:
   run:
@@ -27,7 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-      build-artifact-download-path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,23 +48,23 @@ jobs:
         name: Set build artifact name
         run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
-      - id: set-build-artifact-download-path
-        name: Set build artifact download path
-        run: echo "build-artifact-download-path=$RUNNER_TEMP/$BUILD_ARTIFACT_NAME/" >> "$GITHUB_OUTPUT"
+      - id: set-build-artifact-path
+        name: Set build artifact path
+        run: echo "build-artifact-path=$RUNNER_TEMP/$BUILD_ARTIFACT_NAME/" >> "$GITHUB_OUTPUT"
         env:
           BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
-      - name: Move build artifact to download path
+      - name: Move build artifact
         run: |
-          mkdir -p "$BUILD_ARTIFACT_DOWNLOAD_PATH"
-          mv dist/ "$BUILD_ARTIFACT_DOWNLOAD_PATH"
+          mkdir -p "$BUILD_ARTIFACT_PATH"
+          mv dist/ "$BUILD_ARTIFACT_PATH"
         env:
-          BUILD_ARTIFACT_DOWNLOAD_PATH: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
+          BUILD_ARTIFACT_PATH: ${{ steps.set-build-artifact-path.outputs.build-artifact-path }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
+          path: ${{ steps.set-build-artifact-path.outputs.build-artifact-path }}
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4

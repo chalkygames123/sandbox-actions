@@ -14,9 +14,6 @@ on:
       build-artifact-name:
         required: true
         type: string
-      build-artifact-download-path:
-        required: true
-        type: string
 
 defaults:
   run:
@@ -41,14 +38,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.build-artifact-name }}
-          path: ${{ inputs.build-artifact-download-path }}
 
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-          directory: ${{ inputs.build-artifact-download-path || 'directory' }}
+          directory: directory
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-environment: ${{ inputs.environment || 'preview' }}
     timeout-minutes: 5
