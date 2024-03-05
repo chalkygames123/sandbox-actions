@@ -59,6 +59,8 @@ jobs:
       - id: set-build-artifact-parent-path
         name: Set build artifact parent path
         run: echo "build-artifact-parent-path=$RUNNER_TEMP/$BUILD_ARTIFACT_NAME/" >> "$GITHUB_OUTPUT"
+        env:
+          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
       - name: Move build artifact
         run: |
