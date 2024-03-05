@@ -83,10 +83,9 @@ jobs:
     name: Deploy
     permissions:
       actions: write # required in private repositories by unlike-ltd/github-actions-cloudflare-pages
-      contents: read
+      contents: write
       deployments: write # required by unlike-ltd/github-actions-cloudflare-pages
       pull-requests: write # required by unlike-ltd/github-actions-cloudflare-pages
-      statuses: write # required by unlike-ltd/github-actions-cloudflare-pages
     needs:
       - prepare
       - build
