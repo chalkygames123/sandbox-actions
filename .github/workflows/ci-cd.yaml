@@ -67,4 +67,5 @@ jobs:
     with:
       environment: ${{ needs.prepare.outputs.environment }}
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
+      build-artifact-path: ${{ needs.build.outputs.build-artifact-path }}
     secrets: inherit
