@@ -62,7 +62,7 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.build-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
+    if: inputs.force-deploy || needs.prepare.outputs.build-changed || needs.prepare.outputs.workflows-changed
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.prepare.outputs.environment }}
