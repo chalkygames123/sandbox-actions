@@ -33,7 +33,7 @@ jobs:
           path: ${{ inputs.node-modules-cache-path }}
           key: ${{ inputs.node-modules-cache-key }}
 
-      - if: steps.cache.outputs.cache-hit == false
+      - if: '!steps.cache.outputs.cache-hit'
         run: npm ci
 
       - run: npm run check
