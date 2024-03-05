@@ -13,9 +13,6 @@ on:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
-      build-artifact-download-path:
-        description: The path to the directory where the build artifact should be downloaded
-        value: dist/
 
 defaults:
   run:
@@ -51,10 +48,17 @@ jobs:
         name: Set build artifact name
         run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
+      - name: Move build artifact
+        run: |
+          mkdir -p "$BUILD_ARTIFACT_NAME/"
+          mv dist/ "$BUILD_ARTIFACT_NAME/"
+        env:
+          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: dist/
+          path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
