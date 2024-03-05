@@ -13,9 +13,9 @@ on:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
-      build-artifact-path:
-        description: The path to the build artifact
-        value: ${{ jobs.build.outputs.build-artifact-path }}
+      build-artifact-download-path:
+        description: The path to the directory where the build artifact should be downloaded
+        value: ${{ jobs.build.outputs.build-artifact-download-path }}
 
 defaults:
   run:
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-      build-artifact-path: ${{ steps.set-build-artifact-path.outputs.build-artifact-path }}
+      build-artifact-download-path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,7 +43,7 @@ jobs:
           path: ${{ inputs.node-modules-cache-path }}
           key: ${{ inputs.node-modules-cache-key }}
 
-      - if: steps.cache.outputs.cache-hit == 'true'
+      - if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - run: npm run build
@@ -52,28 +52,14 @@ jobs:
         name: Set build artifact name
         run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
-      - id: set-build-artifact-path
+      - id: set-build-artifact-download-path
         name: Set build artifact path
-        run: echo "build-artifact-path=dist/" >> "$GITHUB_OUTPUT"
-
-      - id: set-build-artifact-parent-path
-        name: Set build artifact parent path
-        run: echo "build-artifact-parent-path=$RUNNER_TEMP/$BUILD_ARTIFACT_NAME/" >> "$GITHUB_OUTPUT"
-        env:
-          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-
-      - name: Move build artifact
-        run: |
-          mkdir -p "$BUILD_ARTIFACT_PARENT_PATH"
-          mv "$BUILD_ARTIFACT_PATH" "$BUILD_ARTIFACT_PARENT_PATH"
-        env:
-          BUILD_ARTIFACT_PATH: ${{ steps.set-build-artifact-path.outputs.build-artifact-path }}
-          BUILD_ARTIFACT_PARENT_PATH: ${{ steps.set-build-artifact-parent-path.outputs.build-artifact-parent-path }}
+        run: echo "build-artifact-download-path=dist/" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: ${{ steps.set-build-artifact-parent-path.outputs.build-artifact-parent-path }}
+          path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
