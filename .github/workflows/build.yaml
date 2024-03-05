@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+      build-artifact-download-path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
     steps:
       - uses: actions/checkout@v4
 
