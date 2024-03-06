@@ -64,5 +64,4 @@ jobs:
     with:
       environment: ${{ needs.prepare.outputs.environment }}
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
-      build-artifact-download-path: ${{ needs.build.outputs.build-artifact-download-path }}
     secrets: inherit

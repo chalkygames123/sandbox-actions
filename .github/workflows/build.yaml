@@ -13,9 +13,6 @@ on:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
-      build-artifact-download-path:
-        description: The path to the directory where the build artifact should be downloaded
-        value: ${{ jobs.build.outputs.build-artifact-download-path }}
 
 defaults:
   run:
@@ -27,7 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-      build-artifact-download-path: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,25 +48,15 @@ jobs:
         name: Set build artifact name
         run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
-      - id: set-build-artifact-download-path
-        name: Set build artifact path
-        run: echo "build-artifact-download-path=dist/" >> "$GITHUB_OUTPUT"
-
-      - id: set-build-artifact-tar-name
-        name: Set build artifact tar name
-        run: echo "build-artifact-tar-name=$(basename "$BUILD_ARTIFACT_PATH").tar" >> "$GITHUB_OUTPUT"
-        env:
-          BUILD_ARTIFACT_PATH: ${{ steps.set-build-artifact-download-path.outputs.build-artifact-download-path }}
-
       - name: Tar build artifact
-        run: tar cvf "$BUILD_ARTIFACT_TAR_NAME" "$BUILD_ARTIFACT_PATH"
+        run: tar cvf "$BUILD_ARTIFACT_NAME".tar dist/
         env:
-          BUILD_ARTIFACT_TAR_NAME: ${{ steps.set-build-artifact-tar-name.outputs.build-artifact-tar-name }}
+          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: ${{ steps.set-build-artifact-tar-name.outputs.build-artifact-tar-name }}
+          path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
