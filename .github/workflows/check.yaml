@@ -27,13 +27,13 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - id: cache
+      - id: node-modules-cache
         uses: actions/cache@v4
         with:
           path: ${{ inputs.node-modules-cache-path }}
           key: ${{ inputs.node-modules-cache-key }}
 
-      - if: steps.cache.outputs.cache-hit != 'true'
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - run: npm run check

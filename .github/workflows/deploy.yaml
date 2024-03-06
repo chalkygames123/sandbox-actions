@@ -14,7 +14,10 @@ on:
       node-modules-cache-key:
         required: true
         type: string
-      build-artifact-name:
+      build-artifact-cache-path:
+        required: true
+        type: string
+      build-artifact-cache-key:
         required: true
         type: string
       environment:
@@ -56,21 +59,20 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - id: cache
+      - id: node-modules-cache
         uses: actions/cache@v4
         with:
           path: ${{ inputs.node-modules-cache-path }}
           key: ${{ inputs.node-modules-cache-key }}
 
-      - if: steps.cache.outputs.cache-hit != 'true'
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/cache/restore@v4
         with:
-          name: ${{ inputs.build-artifact-name }}
-
-      - name: Untar build artifact
-        run: tar xvf ${{ inputs.build-artifact-name }}.tar
+          path: ${{ inputs.build-artifact-cache-path }}
+          key: ${{ inputs.build-artifact-cache-key }}
+          fail-on-cache-miss: true
 
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:

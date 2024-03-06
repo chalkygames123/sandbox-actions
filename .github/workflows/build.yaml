@@ -10,9 +10,12 @@ on:
         required: true
         type: string
     outputs:
-      build-artifact-name:
-        description: The name of the build artifact
-        value: ${{ jobs.build.outputs.build-artifact-name }}
+      build-artifact-cache-path:
+        description: The path to the build artifact to cache
+        value: ${{ jobs.build.outputs.build-artifact-cache-path }}
+      build-artifact-cache-key:
+        description: The cache key for the build artifact
+        value: ${{ jobs.build.outputs.build-artifact-cache-key }}
 
 defaults:
   run:
@@ -23,7 +26,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+      build-artifact-cache-path: ${{ steps.set-build-artifact-cache-path.outputs.build-artifact-cache-path }}
+      build-artifact-cache-key: ${{ steps.set-build-artifact-cache-key.outputs.build-artifact-cache-key }}
     steps:
       - uses: actions/checkout@v4
 
@@ -33,31 +37,29 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - id: cache
+      - id: node-modules-cache
         uses: actions/cache@v4
         with:
           path: ${{ inputs.node-modules-cache-path }}
           key: ${{ inputs.node-modules-cache-key }}
 
-      - if: steps.cache.outputs.cache-hit != 'true'
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run build
-
-      - id: set-build-artifact-name
+      - id: set-build-artifact-cache-path
         name: Set build artifact name
-        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
+        run: echo "build-artifact-cache-path=dist/" >> "$GITHUB_OUTPUT"
 
-      - name: Tar build artifact
-        run: tar cvf "$BUILD_ARTIFACT_NAME".tar dist/
-        env:
-          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+      - id: set-build-artifact-cache-key
+        name: Set build artifact name
+        run: echo "build-artifact-cache-key=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/cache/save@v4
         with:
-          name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar
-          if-no-files-found: error
+          path: ${{ steps.set-build-artifact-cache-path.outputs.build-artifact-cache-path }}
+          key: ${{ steps.set-build-artifact-cache-key.outputs.build-artifact-cache-key }}
+
+      - run: npm run build
 
       - uses: actions/upload-artifact@v4
         with:
