@@ -25,6 +25,11 @@ defaults:
 jobs:
   deploy:
     name: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && 'Delete deployments' || 'Deploy' }}
+    permissions:
+      actions: read
+      contents: read
+      deployments: write
+      pull-requests: write
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
