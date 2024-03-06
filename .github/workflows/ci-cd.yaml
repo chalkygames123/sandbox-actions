@@ -62,6 +62,9 @@ jobs:
     if: inputs.force-deploy || needs.prepare.outputs.build-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
-      environment: ${{ needs.prepare.outputs.environment }}
+      node-modules-cache-path: ${{ needs.prepare.outputs.node-modules-cache-path }}
+      node-modules-cache-key: ${{ needs.prepare.outputs.node-modules-cache-key }}
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
+      environment: ${{ needs.prepare.outputs.environment }}
+      force-deploy: ${{ inputs.force-deploy == true }}
     secrets: inherit
