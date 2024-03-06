@@ -46,6 +46,8 @@ jobs:
       - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
+      - run: npm run build
+
       - id: set-build-artifact-cache-path
         name: Set build artifact name
         run: echo "build-artifact-cache-path=dist/" >> "$GITHUB_OUTPUT"
@@ -58,8 +60,6 @@ jobs:
         with:
           path: ${{ steps.set-build-artifact-cache-path.outputs.build-artifact-cache-path }}
           key: ${{ steps.set-build-artifact-cache-key.outputs.build-artifact-cache-key }}
-
-      - run: npm run build
 
       - uses: actions/upload-artifact@v4
         with:
