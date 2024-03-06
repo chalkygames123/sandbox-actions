@@ -20,8 +20,6 @@ on:
       environment:
         required: true
         type: string
-      force-deploy:
-        type: boolean
 
 defaults:
   run:
@@ -35,7 +33,7 @@ jobs:
       contents: read
       deployments: write
       pull-requests: write
-    if: inputs.force-deploy || github.event_name != 'pull_request' || github.event.action != 'closed'
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
