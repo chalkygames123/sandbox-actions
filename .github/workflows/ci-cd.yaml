@@ -64,8 +64,7 @@ jobs:
     with:
       node-modules-cache-path: ${{ needs.prepare.outputs.node-modules-cache-path }}
       node-modules-cache-key: ${{ needs.prepare.outputs.node-modules-cache-key }}
-      build-artifact-cache-path: ${{ needs.build.outputs.build-artifact-cache-path }}
-      build-artifact-cache-key: ${{ needs.build.outputs.build-artifact-cache-key }}
+      build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
       environment: ${{ needs.prepare.outputs.environment }}
       force-deploy: ${{ inputs.force-deploy == true }}
     secrets: inherit

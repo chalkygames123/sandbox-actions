@@ -10,12 +10,9 @@ on:
         required: true
         type: string
     outputs:
-      build-artifact-cache-path:
-        description: The path to the build artifact to cache
-        value: ${{ jobs.build.outputs.build-artifact-cache-path }}
-      build-artifact-cache-key:
-        description: The cache key for the build artifact
-        value: ${{ jobs.build.outputs.build-artifact-cache-key }}
+      build-artifact-name:
+        description: The name of the build artifact
+        value: ${{ jobs.build.outputs.build-artifact-name }}
 
 defaults:
   run:
@@ -26,8 +23,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      build-artifact-cache-path: ${{ steps.set-build-artifact-cache-path.outputs.build-artifact-cache-path }}
-      build-artifact-cache-key: ${{ steps.set-build-artifact-cache-key.outputs.build-artifact-cache-key }}
+      build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,18 +44,20 @@ jobs:
 
       - run: npm run build
 
-      - id: set-build-artifact-cache-path
+      - id: set-build-artifact-name
         name: Set build artifact name
-        run: echo "build-artifact-cache-path=dist/" >> "$GITHUB_OUTPUT"
+        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
 
-      - id: set-build-artifact-cache-key
-        name: Set build artifact name
-        run: echo "build-artifact-cache-key=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
+      - name: Tar build artifact
+        run: tar cvf "$BUILD_ARTIFACT_NAME".tar dist/
+        env:
+          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
-      - uses: actions/cache/save@v4
+      - uses: actions/upload-artifact@v4
         with:
-          path: ${{ steps.set-build-artifact-cache-path.outputs.build-artifact-cache-path }}
-          key: ${{ steps.set-build-artifact-cache-key.outputs.build-artifact-cache-key }}
+          name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+          path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar
+          if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         with:
