@@ -29,6 +29,9 @@ defaults:
 jobs:
   prepare:
     name: Prepare
+    permissions:
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
       node-modules-cache-key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
