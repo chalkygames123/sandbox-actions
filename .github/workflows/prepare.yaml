@@ -38,7 +38,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - id: setup-pnpm
+        uses: pnpm/action-setup@v3
+
+      - run: |
+          echo $PNPM_DEST
+          echo $PNPM_BIN_DEST
+        env:
+          PNPM_DEST: ${{ steps.setup-pnpm.outputs.dest }}
+          PNPM_BIN_DEST: ${{ steps.setup-pnpm.outputs.bin_dest }}
 
       - id: set-pnpm-store-cache-path
         name: Set pnpm store cache path
