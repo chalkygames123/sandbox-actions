@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"check": "",
+		"check": "echo \"Running checks...\"",
 		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\""
 	},
 	"dependencies": {
