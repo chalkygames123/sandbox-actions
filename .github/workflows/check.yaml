@@ -2,6 +2,13 @@ name: Check
 
 on:
   workflow_call:
+    inputs:
+      pnpm-store-cache-path:
+        required: true
+        type: string
+      pnpm-store-cache-key:
+        required: true
+        type: string
 
 defaults:
   run:
@@ -16,11 +23,10 @@ jobs:
 
       - uses: pnpm/action-setup@v3
 
-      - uses: actions/setup-node@v4
+      - uses: actions/cache@v4
         with:
-          cache: pnpm
-          node-version-file: package.json
-        timeout-minutes: 1
+          path: ${{ inputs.pnpm-store-cache-path }}
+          key: ${{ inputs.pnpm-store-cache-key }}
 
       - run: pnpm install
 

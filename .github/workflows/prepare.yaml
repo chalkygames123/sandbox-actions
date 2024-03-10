@@ -6,6 +6,12 @@ on:
       environment:
         description: The environment to deploy to
         value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
+      pnpm-store-cache-path:
+        description: The path to the pnpm store to cache
+        value: ${{ jobs.prepare.outputs.pnpm-store-cache-path }}
+      pnpm-store-cache-key:
+        description: The cache key for the pnpm store
+        value: ${{ jobs.prepare.outputs.pnpm-store-cache-key }}
       build-changed:
         description: Whether the build has changed
         value: ${{ jobs.prepare.outputs.build-changed }}
@@ -25,10 +31,20 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     outputs:
+      pnpm-store-cache-path: ${{ steps.set-pnpm-store-cache-path.outputs.pnpm-store-cache-path }}
+      pnpm-store-cache-key: ${{ steps.set-pnpm-store-cache-key.outputs.pnpm-store-cache-key }}
       build-changed: ${{ steps.filter.outputs.build }}
       workflows-changed: ${{ steps.filter.outputs.workflows }}
     steps:
       - uses: actions/checkout@v4
+
+      - id: set-pnpm-store-cache-path
+        name: Set pnpm store cache path
+        run: echo "pnpm-store-cache-path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - id: set-pnpm-store-cache-key
+        name: Set pnpm store cache key
+        run: echo "pnpm-store-cache-key=pnpm-store-cache-$RUNNER_OS-${{ hashFiles('**/pnpm-lock.yaml') }}" >> "$GITHUB_OUTPUT"
 
       - id: filter
         uses: dorny/paths-filter@v3
@@ -37,10 +53,10 @@ jobs:
             build:
               - functions/**
               - public/**
-              - astro.config.js
               - src/**
-              - package-lock.json
+              - astro.config.js
               - package.json
+              - pnpm-lock.yaml
               - tsconfig.json
             workflows:
               - .github/workflows/deploy.yaml
