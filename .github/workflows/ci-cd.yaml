@@ -34,9 +34,6 @@ jobs:
     needs:
       - prepare
     uses: ./.github/workflows/check.yaml
-    with:
-      pnpm-store-cache-path: ${{ needs.prepare.outputs.pnpm-store-cache-path }}
-      pnpm-store-cache-key: ${{ needs.prepare.outputs.pnpm-store-cache-key }}
     secrets: inherit
 
   build:
@@ -45,9 +42,6 @@ jobs:
       - prepare
       - check
     uses: ./.github/workflows/build.yaml
-    with:
-      pnpm-store-cache-path: ${{ needs.prepare.outputs.pnpm-store-cache-path }}
-      pnpm-store-cache-key: ${{ needs.prepare.outputs.pnpm-store-cache-key }}
     secrets: inherit
 
   deploy:
@@ -63,8 +57,6 @@ jobs:
     if: inputs.force-deploy || needs.prepare.outputs.build-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
-      pnpm-store-cache-path: ${{ needs.prepare.outputs.pnpm-store-cache-path }}
-      pnpm-store-cache-key: ${{ needs.prepare.outputs.pnpm-store-cache-key }}
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
       environment: ${{ needs.prepare.outputs.environment }}
     secrets: inherit
