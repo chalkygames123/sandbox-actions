@@ -38,6 +38,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v3
+
       - id: set-pnpm-store-cache-path
         name: Set pnpm store cache path
         run: echo "pnpm-store-cache-path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
