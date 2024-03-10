@@ -45,7 +45,7 @@ jobs:
         name: Set pnpm store cache path
         run: echo "pnpm-store-cache-path=$PNPM_STORE_PATH" >> "$GITHUB_OUTPUT"
         env:
-          PNPM_STORE_PATH: ${{ steps.setup-pnpm.outputs.store-path }}
+          PNPM_STORE_PATH: ${{ steps.setup-pnpm.outputs.dest }}
 
       - id: set-pnpm-store-cache-key
         name: Set pnpm store cache key
