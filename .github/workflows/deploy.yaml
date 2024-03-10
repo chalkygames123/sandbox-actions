@@ -48,6 +48,8 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
+      - uses: pnpm/action-setup@v3
+
       - run: pnpm install
 
       - uses: actions/download-artifact@v4
