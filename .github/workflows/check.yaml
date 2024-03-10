@@ -21,14 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
-
       - run: pnpm install
 
-      - uses: actions/cache@v4
+      - uses: actions/setup-node@v4
         with:
-          path: ${{ inputs.pnpm-store-cache-path }}
-          key: ${{ inputs.pnpm-store-cache-key }}
+          cache: pnpm
+          node-version-file: package.json
+        timeout-minutes: 1
 
       - run: pnpm run check
     timeout-minutes: 5
