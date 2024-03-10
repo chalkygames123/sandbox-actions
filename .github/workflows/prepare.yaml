@@ -41,16 +41,11 @@ jobs:
       - id: setup-pnpm
         uses: pnpm/action-setup@v3
 
-      - run: |
-          echo $PNPM_DEST
-          echo $PNPM_BIN_DEST
-        env:
-          PNPM_DEST: ${{ steps.setup-pnpm.outputs.dest }}
-          PNPM_BIN_DEST: ${{ steps.setup-pnpm.outputs.bin_dest }}
-
       - id: set-pnpm-store-cache-path
         name: Set pnpm store cache path
-        run: echo "pnpm-store-cache-path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+        run: echo "pnpm-store-cache-path=$PNPM_STORE_PATH" >> "$GITHUB_OUTPUT"
+        env:
+          PNPM_STORE_PATH: ${{ steps.setup-pnpm.outputs.store-path }}
 
       - id: set-pnpm-store-cache-key
         name: Set pnpm store cache key
