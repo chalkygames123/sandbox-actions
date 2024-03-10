@@ -2,13 +2,6 @@ name: Check
 
 on:
   workflow_call:
-    inputs:
-      node-modules-cache-path:
-        required: true
-        type: string
-      node-modules-cache-key:
-        required: true
-        type: string
 
 defaults:
   run:
@@ -23,18 +16,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          cache: npm
+          cache: pnpm
           node-version-file: package.json
         timeout-minutes: 1
 
-      - id: node-modules-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ inputs.node-modules-cache-path }}
-          key: ${{ inputs.node-modules-cache-key }}
+      - run: pnpm install
 
-      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - run: npm run check
+      - run: pnpm run check
     timeout-minutes: 5

@@ -6,12 +6,6 @@ on:
       environment:
         description: The environment to deploy to
         value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      node-modules-cache-path:
-        description: The path to the node_modules to cache
-        value: '**/node_modules/'
-      node-modules-cache-key:
-        description: The cache key for the node_modules
-        value: ${{ jobs.prepare.outputs.node-modules-cache-key }}
       build-changed:
         description: Whether the build has changed
         value: ${{ jobs.prepare.outputs.build-changed }}
@@ -31,15 +25,10 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     outputs:
-      node-modules-cache-key: ${{ steps.set-node-modules-cache-key.outputs.node-modules-cache-key }}
       build-changed: ${{ steps.filter.outputs.build }}
       workflows-changed: ${{ steps.filter.outputs.workflows }}
     steps:
       - uses: actions/checkout@v4
-
-      - id: set-node-modules-cache-key
-        name: Set node_modules cache key
-        run: echo "node-modules-cache-key=node-modules-cache-$RUNNER_OS-${{ hashFiles('**/package-lock.json') }}" >> "$GITHUB_OUTPUT"
 
       - id: filter
         uses: dorny/paths-filter@v3

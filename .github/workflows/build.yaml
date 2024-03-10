@@ -2,13 +2,6 @@ name: Build
 
 on:
   workflow_call:
-    inputs:
-      node-modules-cache-path:
-        required: true
-        type: string
-      node-modules-cache-key:
-        required: true
-        type: string
     outputs:
       build-artifact-name:
         description: The name of the build artifact
@@ -29,20 +22,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          cache: npm
+          cache: pnpm
           node-version-file: package.json
         timeout-minutes: 1
 
-      - id: node-modules-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ inputs.node-modules-cache-path }}
-          key: ${{ inputs.node-modules-cache-key }}
+      - run: pnpm install
 
-      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - run: npm run build
+      - run: pnpm run build
 
       - id: set-build-artifact-name
         name: Set build artifact name
