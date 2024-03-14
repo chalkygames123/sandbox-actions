@@ -8,6 +8,12 @@ importers:
 
   .: {}
 
+  apps/admin:
+    devDependencies:
+      wrangler:
+        specifier: 3.30.1
+        version: 3.30.1
+
   apps/web:
     devDependencies:
       wrangler:
