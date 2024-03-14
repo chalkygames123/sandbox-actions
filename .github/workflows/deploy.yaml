@@ -18,6 +18,7 @@ on:
 defaults:
   run:
     shell: bash
+    working-directory: apps/web
 
 jobs:
   deploy:

@@ -1,0 +1,10 @@
+{
+	"name": "web",
+	"scripts": {
+		"check": "echo \"Running checks...\"",
+		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\""
+	},
+	"devDependencies": {
+		"wrangler": "3.30.1"
+	}
+}

@@ -1,2 +1,12 @@
-/dist/
-/node_modules/
+# dependencies
+node_modules/
+
+### web ###
+
+# build output
+/apps/web/dist/
+
+### admin ###
+
+# build output
+/apps/admin/dist/
