@@ -6,12 +6,12 @@ on:
       environment:
         description: The environment to deploy to
         value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      build-changed:
+      changes-build:
         description: Whether the build has changed
-        value: ${{ jobs.prepare.outputs.build-changed }}
-      workflows-changed:
+        value: ${{ jobs.prepare.outputs.changes-build }}
+      changes-workflows:
         description: Whether the workflows have changed
-        value: ${{ jobs.prepare.outputs.workflows-changed }}
+        value: ${{ jobs.prepare.outputs.changes-workflows }}
 
 defaults:
   run:
@@ -25,8 +25,8 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     outputs:
-      build-changed: ${{ steps.filter.outputs.build }}
-      workflows-changed: ${{ steps.filter.outputs.workflows }}
+      changes-build: ${{ steps.filter.outputs.build }}
+      changes-workflows: ${{ steps.filter.outputs.workflows }}
     steps:
       - uses: actions/checkout@v4
 

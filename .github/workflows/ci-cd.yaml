@@ -54,7 +54,7 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.build-changed == 'true' || needs.prepare.outputs.workflows-changed == 'true'
+    if: inputs.force-deploy || needs.prepare.outputs.changes-build == 'true' || needs.prepare.outputs.changes-workflows == 'true'
     uses: ./.github/workflows/deploy.yaml
     with:
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
