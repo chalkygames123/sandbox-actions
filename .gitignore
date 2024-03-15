@@ -5,8 +5,10 @@ node_modules/
 
 # build output
 /apps/web/dist/
+/apps/web/stats.html
 
 ### admin ###
 
 # build output
 /apps/admin/dist/
+/apps/admin/stats.html
