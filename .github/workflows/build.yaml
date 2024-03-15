@@ -47,6 +47,9 @@ jobs:
         name: Set build artifacts name
         run: echo "build-artifacts-name=build-artifacts-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
 
+      - name: Tar build artifact
+        run: tar cvf "$BUILD_ARTIFACT_NAME".tar "$BUILD_ARTIFACTS_PATH"
+
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.set-build-artifacts-name.outputs.build-artifacts-name }}
