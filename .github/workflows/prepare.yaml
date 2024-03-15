@@ -23,7 +23,7 @@ jobs:
     name: Prepare
     runs-on: ubuntu-latest
     outputs:
-      changed-apps: ${{ steps.filter-apps.outputs.changess }}
+      changed-apps: ${{ steps.filter-apps.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,5 +48,5 @@ jobs:
               - apps/web/pnpm-lock.yaml
               - apps/web/tsconfig.json
 
-      - run: echo "${{ steps.filter-apps.outputs.changes }}"
+      - run: echo "${{ steps.filter-apps.outputs.changess }}"
     timeout-minutes: 5

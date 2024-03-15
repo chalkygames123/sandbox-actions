@@ -41,10 +41,11 @@ jobs:
     needs:
       - prepare
       - check
-    if: needs.prepare.outputs.changed-apps != '[]'
+    if: contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps)
     strategy:
       matrix:
         project: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
+      fail-fast: false
     uses: ./.github/workflows/build.yaml
     with:
       project: ${{ matrix.project }}
@@ -63,10 +64,11 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.changed-apps != '[]'
+    if: inputs.force-deploy || contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps)
     strategy:
       matrix:
         app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
+      fail-fast: false
     uses: ./.github/workflows/deploy.yaml
     with:
       app: ${{ matrix.app }}
