@@ -32,21 +32,19 @@ jobs:
         with:
           filters: |
             admin:
-              - apps/admin/functions/
-              - apps/admin/public/
-              - apps/admin/src/
+              - apps/admin/functions/**
+              - apps/admin/public/**
+              - apps/admin/src/**
               - apps/admin/astro.config.ts
               - apps/admin/package.json
               - apps/admin/pnpm-lock.yaml
               - apps/admin/tsconfig.json
             web:
-              - apps/web/functions/
-              - apps/web/public/
-              - apps/web/src/
+              - apps/web/functions/**
+              - apps/web/public/**
+              - apps/web/src/**
               - apps/web/astro.config.ts
               - apps/web/package.json
               - apps/web/pnpm-lock.yaml
               - apps/web/tsconfig.json
-
-      - run: echo "${{ steps.filter-apps.outputs.changes }}"
     timeout-minutes: 5
