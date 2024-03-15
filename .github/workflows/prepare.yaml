@@ -48,10 +48,5 @@ jobs:
               - apps/web/pnpm-lock.yaml
               - apps/web/tsconfig.json
 
-      - run: |
-          echo "${{ steps.filter-apps.outputs.admin_count }}"
-          echo "${{ steps.filter-apps.outputs.admin_files }}"
-          echo "${{ steps.filter-apps.outputs.web_count }}"
-          echo "${{ steps.filter-apps.outputs.web_files }}"
-          echo "${{ steps.filter-apps.outputs.changes }}"
+      - run: echo "${{ steps.filter-apps.outputs.changes }}"
     timeout-minutes: 5
