@@ -23,7 +23,7 @@ jobs:
     name: Prepare
     runs-on: ubuntu-latest
     outputs:
-      changed-apps: ${{ steps.filter-apps.outputs.changes }}
+      changed-apps: ${{ steps.filter-apps.outputs.changess }}
     steps:
       - uses: actions/checkout@v4
 
