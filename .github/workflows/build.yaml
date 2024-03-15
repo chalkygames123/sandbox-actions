@@ -3,16 +3,20 @@ name: Build
 on:
   workflow_call:
     inputs:
-      package:
+      project:
+        required: true
+        type: string
+      build-artifacts-path:
         required: true
         type: string
     outputs:
-      build-artifact-name:
-        description: The name of the build artifact
-        value: ${{ jobs.build.outputs.build-artifact-name }}
+      build-artifacts-name:
+        description: The name of the build artifacts
+        value: ${{ jobs.build.outputs.build-artifacts-name }}
 
 env:
-  PACKAGE: ${{ inputs.package }}
+  PROJECT: ${{ inputs.project }}
+  BUILD_ARTIFACTS_PATH: ${{ inputs.build-artifacts-path }}
 
 defaults:
   run:
@@ -23,7 +27,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      build-artifact-name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+      build-artifacts-name: ${{ steps.set-build-artifacts-name.outputs.build-artifacts-name }}
     steps:
       - uses: actions/checkout@v4
 
@@ -35,45 +39,17 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - run: |
-          if [[ -z $PACKAGE ]]; then
-            pnpm install
-          else
-            pnpm install --filter="$PACKAGE"
-          fi
-        env:
-          PACKAGE: ${{ inputs.package }}
+      - run: pnpm install --filter="$PROJECT"
 
-      - run: |
-          if [[ -z $PACKAGE ]]; then
-            pnpm run build
-          else
-            pnpm run build --filter="$PACKAGE"
-          fi
-        env:
-          PACKAGE: ${{ inputs.package }}
+      - run: pnpm run build --filter="$PROJECT"
 
-      - id: set-build-artifact-name
-        name: Set build artifact name
-        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID-$PACKAGE" >> "$GITHUB_OUTPUT"
-        env:
-          PACKAGE: ${{ inputs.package }}
-
-      - name: Tar build artifact
-        run: tar cvf "$BUILD_ARTIFACT_NAME".tar "$PACKAGE"/dist/
-        env:
-          PACKAGE: ${{ inputs.package }}
-          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+      - id: set-build-artifacts-name
+        name: Set build artifacts name
+        run: echo "build-artifacts-name=build-artifacts-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
-          path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar
-          if-no-files-found: error
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: stats-artifact-run-${{ github.run_id }}
-          path: stats.html
+          name: ${{ steps.set-build-artifacts-name.outputs.build-artifacts-name }}
+          path: ${{ inputs.build-artifacts-path }}
           if-no-files-found: error
     timeout-minutes: 5

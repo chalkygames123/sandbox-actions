@@ -9,9 +9,6 @@ on:
       changed-apps:
         description: An array containing names of changed apps
         value: ${{ jobs.prepare.outputs.changed-apps }}
-      changed-packages:
-        description: An array containing names of changed packages
-        value: ${{ jobs.prepare.outputs.changed-packages }}
 
 permissions:
   contents: read
@@ -27,7 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed-apps: ${{ steps.filter-apps.outputs.changes }}
-      changed-packages: ${{ steps.filter-packages.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -58,21 +54,4 @@ jobs:
           echo "${{ steps.filter-apps.outputs.web_count }}"
           echo "${{ steps.filter-apps.outputs.web_files }}"
           echo "${{ steps.filter-apps.outputs.changes }}"
-
-      - id: filter-packages
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            eslint-config: packages/eslint-config/
-            tailwind-config: packages/tailwind-config/
-            typescript-config: packages/typescript-config/
-
-      - run: |
-          echo "${{ steps.filter-packages.outputs.eslint-config_count }}"
-          echo "${{ steps.filter-packages.outputs.eslint-config_files }}"
-          echo "${{ steps.filter-packages.outputs.tailwind-config_count }}"
-          echo "${{ steps.filter-packages.outputs.tailwind-config_files }}"
-          echo "${{ steps.filter-packages.outputs.typescript-config_count }}"
-          echo "${{ steps.filter-packages.outputs.typescript-config_files }}"
-          echo "${{ steps.filter-packages.outputs.changes }}"
     timeout-minutes: 5

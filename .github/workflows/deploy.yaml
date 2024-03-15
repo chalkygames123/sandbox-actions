@@ -8,13 +8,16 @@ on:
       - main
   workflow_call:
     inputs:
-      build-artifact-name:
+      app:
+        required: true
+        type: string
+      build-artifacts-name:
+        required: true
+        type: string
+      public-path:
         required: true
         type: string
       environment:
-        required: true
-        type: string
-      package:
         required: true
         type: string
 
@@ -28,7 +31,9 @@ env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
   CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-  PACKAGE: ${{ inputs.package }}
+  APP: ${{ inputs.app }}
+  BUILD_ARTIFACTS_NAME: ${{ inputs.build-artifacts-name }}
+  ENVIRONMENT: ${{ inputs.environment }}
 
 defaults:
   run:
@@ -56,26 +61,18 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - run: |
-          if [[ -z $PACKAGE ]]; then
-            pnpm install
-          else
-            pnpm install --filter="$PACKAGE"
-          fi
+      - run: pnpm install --filter="$APP"
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.build-artifact-name }}
-
-      - name: Untar build artifact
-        run: tar xvf ${{ inputs.build-artifact-name }}.tar
+          name: ${{ inputs.build-artifacts-name }}
 
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-          directory: apps/${{ inputs.package }}/dist/
+          directory: ${{ inputs.public-path }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-environment: ${{ inputs.environment }}
     timeout-minutes: 5
@@ -96,7 +93,7 @@ jobs:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-          directory: apps/${{ inputs.package }}/dist/
+          directory: ${{ inputs.public-path }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-environment: ${{ inputs.environment }}
     timeout-minutes: 5

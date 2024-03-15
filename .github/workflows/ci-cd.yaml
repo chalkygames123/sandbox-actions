@@ -37,17 +37,19 @@ jobs:
     secrets: inherit
 
   build:
-    name: Build
+    name: Build apps
     needs:
       - prepare
       - check
-    if: needs.prepare.outputs.changed-apps
     strategy:
       matrix:
-        package: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
+        project: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
     uses: ./.github/workflows/build.yaml
     with:
-      package: ${{ matrix.package }}
+      project: ${{ matrix.project }}
+      build-artifacts-path: |
+        apps/${{ matrix.project }}/dist/
+        apps/${{ matrix.project }}/stats.html
     secrets: inherit
 
   deploy:
@@ -60,13 +62,13 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.changed-apps
     strategy:
       matrix:
         app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
     uses: ./.github/workflows/deploy.yaml
     with:
-      build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
+      app: ${{ matrix.app }}
+      build-artifacts-name: ${{ needs.build.outputs.build-artifacts-name }}
+      public-path: apps/${{ matrix.app }}/dist/
       environment: ${{ needs.prepare.outputs.environment }}
-      package: ${{ matrix.app }}
     secrets: inherit
