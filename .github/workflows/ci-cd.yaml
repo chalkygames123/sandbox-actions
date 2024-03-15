@@ -41,6 +41,7 @@ jobs:
     needs:
       - prepare
       - check
+    if: needs.prepare.outputs.changed-apps
     strategy:
       matrix:
         project: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
@@ -62,6 +63,7 @@ jobs:
     needs:
       - prepare
       - build
+    if: inputs.force-deploy || needs.prepare.outputs.changed-apps
     strategy:
       matrix:
         app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
