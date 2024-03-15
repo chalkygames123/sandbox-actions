@@ -1,7 +1,7 @@
 {
 	"name": "admin",
 	"scripts": {
-		"check": "echo \"Running checks...\"",
+		"check": "echo \"no check specified\"",
 		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\""
 	},
 	"devDependencies": {

@@ -6,10 +6,9 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: apps/web
 
 jobs:
-  build:
+  check:
     name: Check
     runs-on: ubuntu-latest
     steps:

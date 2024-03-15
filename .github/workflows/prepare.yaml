@@ -6,43 +6,73 @@ on:
       environment:
         description: The environment to deploy to
         value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      changes-build:
-        description: Whether the build has changed
-        value: ${{ jobs.prepare.outputs.changes-build }}
-      changes-workflows:
-        description: Whether the workflows have changed
-        value: ${{ jobs.prepare.outputs.changes-workflows }}
+      changed-apps:
+        description: An array containing names of changed apps
+        value: ${{ jobs.prepare.outputs.changed-apps }}
+      changed-packages:
+        description: An array containing names of changed packages
+        value: ${{ jobs.prepare.outputs.changed-packages }}
+
+permissions:
+  contents: read
+  pull-requests: read
 
 defaults:
   run:
     shell: bash
-    working-directory: apps/web
 
 jobs:
   prepare:
     name: Prepare
-    permissions:
-      contents: read
-      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
-      changes-build: ${{ steps.filter.outputs.build }}
-      changes-workflows: ${{ steps.filter.outputs.workflows }}
+      changed-apps: ${{ steps.filter-apps.outputs.changes }}
+      changed-packages: ${{ steps.filter-packages.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
 
-      - id: filter
+      - id: filter-apps
         uses: dorny/paths-filter@v3
         with:
           filters: |
-            build:
-              - functions/**
-              - public/**
-              - src/**
-              - astro.config.js
-              - package.json
-              - pnpm-lock.yaml
-              - tsconfig.json
-            workflows:
-              - .github/workflows/deploy.yaml
+            admin:
+              - apps/admin/functions/
+              - apps/admin/public/
+              - apps/admin/src/
+              - apps/admin/astro.config.ts
+              - apps/admin/package.json
+              - apps/admin/pnpm-lock.yaml
+              - apps/admin/tsconfig.json
+            web:
+              - apps/web/functions/
+              - apps/web/public/
+              - apps/web/src/
+              - apps/web/astro.config.ts
+              - apps/web/package.json
+              - apps/web/pnpm-lock.yaml
+              - apps/web/tsconfig.json
+
+      - run: |
+          echo "${{ steps.filter-apps.outputs.admin_count }}"
+          echo "${{ steps.filter-apps.outputs.admin_files }}"
+          echo "${{ steps.filter-apps.outputs.web_count }}"
+          echo "${{ steps.filter-apps.outputs.web_files }}"
+          echo "${{ steps.filter-apps.outputs.changes }}"
+
+      - id: filter-packages
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            eslint-config: packages/eslint-config/
+            tailwind-config: packages/tailwind-config/
+            typescript-config: packages/typescript-config/
+
+      - run: |
+          echo "${{ steps.filter-packages.outputs.eslint-config_count }}"
+          echo "${{ steps.filter-packages.outputs.eslint-config_files }}"
+          echo "${{ steps.filter-packages.outputs.tailwind-config_count }}"
+          echo "${{ steps.filter-packages.outputs.tailwind-config_files }}"
+          echo "${{ steps.filter-packages.outputs.typescript-config_count }}"
+          echo "${{ steps.filter-packages.outputs.typescript-config_files }}"
+          echo "${{ steps.filter-packages.outputs.changes }}"
     timeout-minutes: 5

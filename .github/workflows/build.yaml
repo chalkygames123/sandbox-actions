@@ -2,15 +2,21 @@ name: Build
 
 on:
   workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
     outputs:
       build-artifact-name:
         description: The name of the build artifact
         value: ${{ jobs.build.outputs.build-artifact-name }}
 
+env:
+  PACKAGE: ${{ inputs.package }}
+
 defaults:
   run:
     shell: bash
-    working-directory: apps/web
 
 jobs:
   build:
@@ -29,17 +35,34 @@ jobs:
           node-version-file: package.json
         timeout-minutes: 1
 
-      - run: pnpm install
+      - run: |
+          if [[ -z $PACKAGE ]]; then
+            pnpm install
+          else
+            pnpm install --filter="$PACKAGE"
+          fi
+        env:
+          PACKAGE: ${{ inputs.package }}
 
-      - run: pnpm run build
+      - run: |
+          if [[ -z $PACKAGE ]]; then
+            pnpm run build
+          else
+            pnpm run build --filter="$PACKAGE"
+          fi
+        env:
+          PACKAGE: ${{ inputs.package }}
 
       - id: set-build-artifact-name
         name: Set build artifact name
-        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
+        run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID-$PACKAGE" >> "$GITHUB_OUTPUT"
+        env:
+          PACKAGE: ${{ inputs.package }}
 
       - name: Tar build artifact
-        run: tar cvf "$BUILD_ARTIFACT_NAME".tar dist/
+        run: tar cvf "$BUILD_ARTIFACT_NAME".tar "$PACKAGE"/dist/
         env:
+          PACKAGE: ${{ inputs.package }}
           BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
       - uses: actions/upload-artifact@v4

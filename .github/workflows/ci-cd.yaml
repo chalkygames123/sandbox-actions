@@ -16,7 +16,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: apps/web
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -27,9 +26,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-    strategy:
-      matrix:
-        environment: [production, preview]
     uses: ./.github/workflows/prepare.yaml
     secrets: inherit
 
@@ -37,9 +33,6 @@ jobs:
     name: Check
     needs:
       - prepare
-    strategy:
-      matrix:
-        environment: [production, preview]
     uses: ./.github/workflows/check.yaml
     secrets: inherit
 
@@ -48,10 +41,13 @@ jobs:
     needs:
       - prepare
       - check
+    if: needs.prepare.outputs.changed-apps
     strategy:
       matrix:
-        environment: [production, preview]
+        package: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
     uses: ./.github/workflows/build.yaml
+    with:
+      package: ${{ matrix.package }}
     secrets: inherit
 
   deploy:
@@ -64,12 +60,13 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.changes-build == 'true' || needs.prepare.outputs.changes-workflows == 'true'
+    if: inputs.force-deploy || needs.prepare.outputs.changed-apps
     strategy:
       matrix:
-        environment: [production, preview]
+        app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
     uses: ./.github/workflows/deploy.yaml
     with:
       build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
       environment: ${{ needs.prepare.outputs.environment }}
+      package: ${{ matrix.app }}
     secrets: inherit
