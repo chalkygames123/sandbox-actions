@@ -41,7 +41,7 @@ jobs:
     needs:
       - prepare
       - check
-    if: contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps)
+    if: ${{ ! contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps) }}
     strategy:
       matrix:
         project: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
@@ -64,7 +64,7 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps)
+    if: ${{ inputs.force-deploy || ! contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps) }}
     strategy:
       matrix:
         app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
