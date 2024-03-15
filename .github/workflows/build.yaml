@@ -41,7 +41,7 @@ jobs:
 
       - run: pnpm install --filter="$PROJECT"
 
-      - run: pnpm run build --filter="$PROJECT"
+      - run: pnpm run --filter="$PROJECT" build
 
       - id: set-build-artifacts-name
         name: Set build artifacts name
