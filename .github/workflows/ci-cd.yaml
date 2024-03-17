@@ -1,17 +1,26 @@
 name: CI/CD
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  workflow_call:
     inputs:
+      project:
+        required: true
+        type: string
+      source-paths:
+        required: true
+        type: string
+      build-artifacts-path:
+        required: true
+        type: string
       force-deploy:
-        description: 'Force deployment'
+        required: false
         type: boolean
+
+env:
+  PROJECT: ${{ inputs.project }}
+  SOURCE_PATHS: ${{ inputs.source-paths }}
+  BUILD_ARTIFACTS_PATH: ${{ inputs.build-artifacts-path }}
+  FORCE_DEPLOY: ${{ inputs.force-deploy }}
 
 defaults:
   run:
@@ -27,6 +36,8 @@ jobs:
       contents: read
       pull-requests: read
     uses: ./.github/workflows/prepare.yaml
+    with:
+      source-paths: ${{ inputs.source-paths }}
     secrets: inherit
 
   check:
@@ -37,21 +48,14 @@ jobs:
     secrets: inherit
 
   build:
-    name: Build apps
+    name: Build
     needs:
       - prepare
       - check
-    if: ${{ ! contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps) }}
-    strategy:
-      matrix:
-        project: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
-      fail-fast: false
     uses: ./.github/workflows/build.yaml
     with:
-      project: ${{ matrix.project }}
-      build-artifacts-path: |
-        apps/${{ matrix.project }}/dist/
-        apps/${{ matrix.project }}/stats.html
+      project: ${{ inputs.project }}
+      build-artifacts-path: ${{ inputs.build-artifacts-path }}
     secrets: inherit
 
   deploy:
@@ -64,15 +68,11 @@ jobs:
     needs:
       - prepare
       - build
-    if: ${{ inputs.force-deploy || ! contains(fromJSON('["[]", ""]'), needs.prepare.outputs.changed-apps) }}
-    strategy:
-      matrix:
-        app: ${{ fromJSON(needs.prepare.outputs.changed-apps) }}
-      fail-fast: false
+    if: ${{ ! startsWith(inputs.project, '@workspace/') && (inputs.force-deploy || needs.prepare.outputs.source-files-changed) }}
     uses: ./.github/workflows/deploy.yaml
     with:
-      app: ${{ matrix.app }}
+      project: ${{ inputs.project }}
       build-artifacts-name: ${{ needs.build.outputs.build-artifacts-name }}
-      public-path: apps/${{ matrix.app }}/dist/
+      public-path: apps/${{ inputs.project }}/dist/
       environment: ${{ needs.prepare.outputs.environment }}
     secrets: inherit

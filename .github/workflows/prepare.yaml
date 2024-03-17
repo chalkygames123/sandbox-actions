@@ -2,13 +2,17 @@ name: Prepare
 
 on:
   workflow_call:
+    inputs:
+      source-paths:
+        required: true
+        type: string
     outputs:
       environment:
         description: The environment to deploy to
         value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
-      changed-apps:
-        description: A JSON array containing names of changed apps
-        value: ${{ jobs.prepare.outputs.changed-apps }}
+      source-files-changed:
+        description: Whether the source files have changed
+        value: ${{ jobs.prepare.outputs.source-files-changed }}
 
 permissions:
   contents: read
@@ -23,7 +27,7 @@ jobs:
     name: Prepare
     runs-on: ubuntu-latest
     outputs:
-      changed-apps: ${{ steps.filter-apps.outputs.changes }}
+      source-files-changed: ${{ steps.filter-apps.outputs.source }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,20 +35,5 @@ jobs:
         uses: dorny/paths-filter@v3
         with:
           filters: |
-            admin:
-              - apps/admin/functions/**
-              - apps/admin/public/**
-              - apps/admin/src/**
-              - apps/admin/astro.config.ts
-              - apps/admin/package.json
-              - apps/admin/pnpm-lock.yaml
-              - apps/admin/tsconfig.json
-            web:
-              - apps/web/functions/**
-              - apps/web/public/**
-              - apps/web/src/**
-              - apps/web/astro.config.ts
-              - apps/web/package.json
-              - apps/web/pnpm-lock.yaml
-              - apps/web/tsconfig.json
+            source: ${{ inputs.source-paths }}
     timeout-minutes: 5
