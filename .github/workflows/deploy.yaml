@@ -33,6 +33,7 @@ env:
   CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
   APP: ${{ inputs.app }}
   BUILD_ARTIFACTS_NAME: ${{ inputs.build-artifacts-name }}
+  PUBLIC_PATH: ${{ inputs.public-path }}
   ENVIRONMENT: ${{ inputs.environment }}
 
 defaults:

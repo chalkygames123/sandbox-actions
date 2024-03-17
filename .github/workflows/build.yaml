@@ -51,6 +51,8 @@ jobs:
         run: |
           mapfile -t args <<< "$(echo "$BUILD_ARTIFACTS_PATH" | grep '[^[:space:]]')"
           tar cvf "$BUILD_ARTIFACT_NAME".tar "${args[@]}"
+        env:
+          BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifacts-name.outputs.build-artifacts-name }}
 
       - uses: actions/upload-artifact@v4
         with:
