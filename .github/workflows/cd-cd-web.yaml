@@ -14,6 +14,7 @@ on:
         type: boolean
 
 env:
+  PROJECT: web
   FORCE_DEPLOY: ${{ inputs.force-deploy }}
 
 defaults:
@@ -24,28 +25,67 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 
 jobs:
-  ci-cd:
-    name: CI/CD
+  prepare:
+    name: Prepare
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      environment: web ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
+      source-files-changed: ${{ steps.filter.outputs.source }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            source:
+              - apps/web/functions/**
+              - apps/web/public/**
+              - apps/web/src/**
+              - apps/web/astro.config.ts
+              - apps/web/package.json
+              - apps/web/pnpm-lock.yaml
+              - apps/web/tsconfig.json
+    timeout-minutes: 5
+
+  check:
+    name: Check
+    needs:
+      - prepare
+    uses: ./.github/workflows/check.yaml
+    secrets: inherit
+
+  build:
+    name: Build
+    needs:
+      - prepare
+      - check
+    uses: ./.github/workflows/build.yaml
+    with:
+      project: web
+      build-artifacts-path: |
+        apps/web/dist/
+        apps/web/stats.html
+    secrets: inherit
+
+  deploy:
+    name: Deploy
     permissions:
       actions: read
       contents: read
       deployments: write
       pull-requests: write
-    uses: ./.github/workflows/ci-cd.yaml
+    needs:
+      - prepare
+      - build
+    if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
+    uses: ./.github/workflows/deploy.yaml
     with:
       project: web
-      source-paths: |
-        [
-          apps/web/functions/**
-          apps/web/public/**
-          apps/web/src/**
-          apps/web/astro.config.ts
-          apps/web/package.json
-          apps/web/pnpm-lock.yaml
-          apps/web/tsconfig.json
-        ]
-      build-artifacts-path: |
-        apps/web/dist/
-        apps/web/stats.html
-      force-deploy: ${{ inputs.force-deploy == true }}
+      build-artifacts-name: ${{ needs.build.outputs.build-artifacts-name }}
+      public-path: apps/web/dist/
+      environment: ${{ needs.prepare.outputs.environment }}
     secrets: inherit

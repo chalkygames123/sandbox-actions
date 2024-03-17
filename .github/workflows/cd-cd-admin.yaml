@@ -10,11 +10,11 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy:
-        default: false
         description: 'Force deployment'
         type: boolean
 
 env:
+  PROJECT: admin
   FORCE_DEPLOY: ${{ inputs.force-deploy }}
 
 defaults:
@@ -25,28 +25,67 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 
 jobs:
-  ci-cd:
-    name: CI/CD
+  prepare:
+    name: Prepare
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    outputs:
+      environment: admin ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
+      source-files-changed: ${{ steps.filter.outputs.source }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            source:
+              - apps/admin/functions/**
+              - apps/admin/public/**
+              - apps/admin/src/**
+              - apps/admin/astro.config.ts
+              - apps/admin/package.json
+              - apps/admin/pnpm-lock.yaml
+              - apps/admin/tsconfig.json
+    timeout-minutes: 5
+
+  check:
+    name: Check
+    needs:
+      - prepare
+    uses: ./.github/workflows/check.yaml
+    secrets: inherit
+
+  build:
+    name: Build
+    needs:
+      - prepare
+      - check
+    uses: ./.github/workflows/build.yaml
+    with:
+      project: admin
+      build-artifacts-path: |
+        apps/admin/dist/
+        apps/admin/stats.html
+    secrets: inherit
+
+  deploy:
+    name: Deploy
     permissions:
       actions: read
       contents: read
       deployments: write
       pull-requests: write
-    uses: ./.github/workflows/ci-cd.yaml
+    needs:
+      - prepare
+      - build
+    if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
+    uses: ./.github/workflows/deploy.yaml
     with:
       project: admin
-      source-paths: |
-        [
-          apps/admin/functions/**
-          apps/admin/public/**
-          apps/admin/src/**
-          apps/admin/astro.config.ts
-          apps/admin/package.json
-          apps/admin/pnpm-lock.yaml
-          apps/admin/tsconfig.json
-        ]
-      build-artifacts-path: |
-        apps/admin/dist/
-        apps/admin/stats.html
-      force-deploy: ${{ inputs.force-deploy == true }}
+      build-artifacts-name: ${{ needs.build.outputs.build-artifacts-name }}
+      public-path: apps/admin/dist/
+      environment: ${{ needs.prepare.outputs.environment }}
     secrets: inherit
