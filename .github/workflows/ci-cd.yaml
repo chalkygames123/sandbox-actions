@@ -13,7 +13,7 @@ on:
         required: true
         type: string
       force-deploy:
-        required: false
+        required: true
         type: boolean
 
 env:
