@@ -34,6 +34,7 @@ jobs:
       pull-requests: read
     uses: ./.github/workflows/prepare.yaml
     with:
+      project: ${{ inputs.project }}
       source-paths: ${{ inputs.source-paths }}
     secrets: inherit
 

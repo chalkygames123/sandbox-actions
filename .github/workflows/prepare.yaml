@@ -3,13 +3,16 @@ name: Prepare
 on:
   workflow_call:
     inputs:
+      project:
+        required: true
+        type: string
       source-paths:
         required: true
         type: string
     outputs:
       environment:
         description: The environment to deploy to
-        value: ${{ github.ref_name == github.event.repository.default_branch && 'production' || 'preview' }}
+        value: ${{ inputs.project }} ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
       source-files-changed:
         description: Whether the source files have changed
         value: ${{ jobs.prepare.outputs.source-files-changed }}
