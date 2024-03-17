@@ -26,11 +26,11 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     outputs:
-      source-files-changed: ${{ steps.filter-apps.outputs.source }}
+      source-files-changed: ${{ steps.filter.outputs.source }}
     steps:
       - uses: actions/checkout@v4
 
-      - id: filter-apps
+      - id: filter
         uses: dorny/paths-filter@v3
         with:
           filters: |

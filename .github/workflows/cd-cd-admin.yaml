@@ -36,13 +36,15 @@ jobs:
     with:
       project: admin
       source-paths: |
-        - apps/admin/functions/**
-        - apps/admin/public/**
-        - apps/admin/src/**
-        - apps/admin/astro.config.ts
-        - apps/admin/package.json
-        - apps/admin/pnpm-lock.yaml
-        - apps/admin/tsconfig.json
+        [
+          apps/admin/functions/**
+          apps/admin/public/**
+          apps/admin/src/**
+          apps/admin/astro.config.ts
+          apps/admin/package.json
+          apps/admin/pnpm-lock.yaml
+          apps/admin/tsconfig.json
+        ]
       build-artifacts-path: |
         apps/admin/dist/
         apps/admin/stats.html
