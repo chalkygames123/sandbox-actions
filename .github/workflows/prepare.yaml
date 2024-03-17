@@ -14,10 +14,6 @@ on:
         description: Whether the source files have changed
         value: ${{ jobs.prepare.outputs.source-files-changed }}
 
-permissions:
-  contents: read
-  pull-requests: read
-
 defaults:
   run:
     shell: bash
@@ -25,6 +21,9 @@ defaults:
 jobs:
   prepare:
     name: Prepare
+    permissions:
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     outputs:
       source-files-changed: ${{ steps.filter-apps.outputs.source }}

@@ -16,12 +16,6 @@ on:
         required: true
         type: string
 
-permissions:
-  actions: read
-  contents: read
-  deployments: write
-  pull-requests: write
-
 env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
@@ -38,6 +32,11 @@ defaults:
 jobs:
   deploy:
     name: Deploy
+    permissions:
+      actions: read
+      contents: read
+      deployments: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Check if required variables are defined
