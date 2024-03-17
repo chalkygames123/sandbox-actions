@@ -48,7 +48,9 @@ jobs:
         run: echo "build-artifacts-name=build-artifacts-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
 
       - name: Tar build artifact
-        run: tar cvf "$BUILD_ARTIFACT_NAME".tar "${(f)BUILD_ARTIFACTS_PATH}"
+        run: |
+          mapfile -t args <<< "$BUILD_ARTIFACTS_PATH"
+          tar cvf "$BUILD_ARTIFACT_NAME".tar "${args[@]}"
 
       - uses: actions/upload-artifact@v4
         with:
