@@ -10,7 +10,6 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy:
-        default: false
         description: 'Force deployment'
         type: boolean
 
