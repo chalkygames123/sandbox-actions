@@ -15,7 +15,7 @@ on:
         type: boolean
 
 env:
-  FORCE_DEPLOY: ${{ github.event.inputs.force-deploy }}
+  FORCE_DEPLOY: ${{ inputs.force-deploy }}
 
 defaults:
   run:
@@ -46,5 +46,5 @@ jobs:
       build-artifacts-path: |
         apps/web/dist/
         apps/web/stats.html
-      force-deploy: ${{ inputs.force-deploy }}
+      force-deploy: ${{ inputs.force-deploy == true }}
     secrets: inherit
