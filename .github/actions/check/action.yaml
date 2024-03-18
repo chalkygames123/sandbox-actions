@@ -1,0 +1,21 @@
+name: Check
+
+description: Check the health of the project
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v3
+
+    - uses: actions/setup-node@v4
+      with:
+        cache: pnpm
+        node-version-file: package.json
+
+    - run: pnpm install
+      shell: bash
+
+    - run: pnpm run check
+      shell: bash
