@@ -88,9 +88,9 @@ jobs:
 
       - uses: ./.github/actions/deploy
         with:
-          app: web
+          app: admin
           build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
-          public-path: apps/web/dist/
+          public-path: apps/admin/dist/
           environment: ${{ needs.prepare.outputs.environment }}
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
