@@ -35,6 +35,8 @@ jobs:
       environment: ${{ steps.prepare.outputs.environment }}
       source-files-changed: ${{ steps.prepare.outputs.source-files-changed }}
     steps:
+      - uses: actions/checkout@v4
+
       - id: prepare
         uses: ./.github/actions/prepare/action.yaml
         with:
