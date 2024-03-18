@@ -15,13 +15,13 @@ inputs:
   environment:
     description: The environment to deploy to
     required: true
-  cloudfare-api-token:
+  cloudflare-api-token:
     description: The Cloudflare API token
     required: true
-  cloudfare-account-id:
+  cloudflare-account-id:
     description: The Cloudflare account ID
     required: true
-  cloudfare-project-name:
+  cloudflare-project-name:
     description: The Cloudflare project name
     required: true
   github-token:
