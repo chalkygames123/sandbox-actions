@@ -32,23 +32,11 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     outputs:
-      environment: admin ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
-      source-files-changed: ${{ steps.filter.outputs.source }}
+      environment: ${{ steps.prepare.outputs.environment }}
+      source-files-changed: ${{ steps.prepare.outputs.source-files-changed }}
     steps:
-      - uses: actions/checkout@v4
-
-      - id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            source:
-              - apps/admin/functions/**
-              - apps/admin/public/**
-              - apps/admin/src/**
-              - apps/admin/astro.config.ts
-              - apps/admin/package.json
-              - apps/admin/pnpm-lock.yaml
-              - apps/admin/tsconfig.json
+      - id: prepare
+        uses: ./.github/actions/prepare.yaml
     timeout-minutes: 5
 
   check:

@@ -1,0 +1,8 @@
+source:
+  - apps/web/functions/**
+  - apps/web/public/**
+  - apps/web/src/**
+  - apps/web/astro.config.ts
+  - apps/web/package.json
+  - apps/web/pnpm-lock.yaml
+  - apps/web/tsconfig.json
