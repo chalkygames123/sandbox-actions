@@ -6,15 +6,13 @@ inputs:
   project:
     description: The project to build
     required: true
-    type: string
   build-artifact-content-path:
     description: The path to the build artifact content
     required: true
-    type: string
 
 outputs:
   build-artifact-name:
-    description: The name of the build artifact to be uploaded
+    description: The name of the build artifact to upload
     value: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
 runs:

@@ -1,12 +1,11 @@
 name: Prepare
 
-description: Prepare prerequisites for subsequent jobs
+description: Prepare prerequisites for subsequent jobs in the workflow
 
 inputs:
   project:
     description: The project to prepare for
     required: true
-    type: string
 
 outputs:
   environment:

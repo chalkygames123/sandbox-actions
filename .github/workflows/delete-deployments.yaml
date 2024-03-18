@@ -16,7 +16,6 @@ jobs:
     name: Delete deployments
     permissions:
       actions: read
-      contents: read
       deployments: write
       pull-requests: write
     runs-on: ubuntu-latest

@@ -1,4 +1,4 @@
-name: CI/CD (Admin)
+name: CI/CD (admin)
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy:
-        description: Force deployment
+        description: Force deploy
         type: boolean
 
 defaults:
@@ -81,10 +81,13 @@ jobs:
       - prepare
       - build
     if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
-    uses: ./.github/workflows/deploy.yaml
-    with:
-      project: admin
-      build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
-      public-path: apps/admin/dist/
-      environment: ${{ needs.prepare.outputs.environment }}
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/deploy
+        with:
+          app: web
+          build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
+          public-path: apps/web/dist/
+          environment: ${{ needs.prepare.outputs.environment }}
