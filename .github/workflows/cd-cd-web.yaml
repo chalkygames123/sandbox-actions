@@ -10,12 +10,8 @@ on:
   workflow_dispatch:
     inputs:
       force-deploy:
-        description: 'Force deployment'
+        description: Force deployment
         type: boolean
-
-env:
-  PROJECT: web
-  FORCE_DEPLOY: ${{ inputs.force-deploy }}
 
 defaults:
   run:
@@ -49,7 +45,9 @@ jobs:
       - prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/check.yaml
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/workflows/check
     timeout-minutes: 5
 
   build:
@@ -57,13 +55,20 @@ jobs:
     needs:
       - prepare
       - check
-    uses: ./.github/workflows/build.yaml
-    with:
-      project: web
-      build-artifacts-path: |
-        apps/web/dist/
-        apps/web/stats.html
-    secrets: inherit
+    runs-on: ubuntu-latest
+    outputs:
+      build-artifacts-name: ${{ steps.build.outputs.build-artifacts-name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: build
+        uses: ./.github/actions/build/action
+        with:
+          project: web
+          build-artifact-content-path: |
+            apps/web/dist/
+            apps/web/stats.html
+    timeout-minutes: 5
 
   deploy:
     name: Deploy

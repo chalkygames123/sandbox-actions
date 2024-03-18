@@ -1,0 +1,60 @@
+name: Build
+
+description: Build the project
+
+inputs:
+  project:
+    description: The project to build
+    required: true
+    type: string
+  build-artifact-content-path:
+    description: The path to the build artifact content
+    required: true
+    type: string
+
+outputs:
+  build-artifact-name:
+    description: The name of the build artifact to be uploaded
+    value: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v3
+
+    - uses: actions/setup-node@v4
+      with:
+        cache: pnpm
+        node-version-file: package.json
+
+    - run: pnpm install --filter="$PROJECT"
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - run: pnpm run --filter="$PROJECT" build
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - id: set-build-artifact-name
+      name: Set build artifacts name
+      run: echo "build-artifact-name=build-artifacts-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - name: Tar build artifacts
+      run: |
+        mapfile -t args <<< "$(echo "$BUILD_ARTIFACTS_PATH" | grep '[^[:space:]]')"
+        tar cvf "$BUILD_ARTIFACT_NAME".tar "${args[@]}"
+      shell: bash
+      env:
+        BUILD_ARTIFACT_PATH: ${{ inputs.build-artifact-content-path }}
+        BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
+        path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar
+        if-no-files-found: error

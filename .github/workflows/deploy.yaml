@@ -16,15 +16,6 @@ on:
         required: true
         type: string
 
-env:
-  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-  CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-  PROJECT: ${{ inputs.project }}
-  BUILD_ARTIFACTS_NAME: ${{ inputs.build-artifacts-name }}
-  PUBLIC_PATH: ${{ inputs.public-path }}
-  ENVIRONMENT: ${{ inputs.environment }}
-
 defaults:
   run:
     shell: bash
@@ -38,6 +29,10 @@ jobs:
       deployments: write
       pull-requests: write
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
     steps:
       - name: Check if required variables are defined
         run: |
@@ -56,6 +51,8 @@ jobs:
         timeout-minutes: 1
 
       - run: pnpm install --filter="$PROJECT"
+        env:
+          PROJECT: ${{ inputs.project }}
 
       - uses: actions/download-artifact@v4
         with:
@@ -63,6 +60,8 @@ jobs:
 
       - name: Untar build artifacts
         run: tar xvf "$BUILD_ARTIFACTS_NAME".tar
+        env:
+          BUILD_ARTIFACTS_NAME: ${{ inputs.build-artifacts-name }}
 
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:
