@@ -91,3 +91,8 @@ jobs:
           build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
           public-path: apps/web/dist/
           environment: ${{ needs.prepare.outputs.environment }}
+          cloudfare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudfare-account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          cloudfare-project-name: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 5

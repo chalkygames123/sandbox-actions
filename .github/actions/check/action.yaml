@@ -1,6 +1,6 @@
 name: Check
 
-description: Check the health of the project
+description: Check the health of a project
 
 runs:
   using: composite

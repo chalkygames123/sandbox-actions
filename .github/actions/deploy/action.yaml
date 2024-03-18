@@ -1,6 +1,6 @@
 name: Deploy
 
-description: Deploy the app
+description: Deploy an app
 
 inputs:
   app:
@@ -15,6 +15,18 @@ inputs:
   environment:
     description: The environment to deploy to
     required: true
+  cloudfare-api-token:
+    description: The Cloudflare API token
+    required: true
+  cloudfare-account-id:
+    description: The Cloudflare account ID
+    required: true
+  cloudfare-project-name:
+    description: The Cloudflare project name
+    required: true
+  github-token:
+    description: The GitHub token
+    required: true
 
 runs:
   using: composite
@@ -26,9 +38,9 @@ runs:
         echo "CLOUDFLARE_PROJECT_NAME: ${CLOUDFLARE_PROJECT_NAME:?configuration variable is not defined}"
       shell: bash
       env:
-        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+        CLOUDFLARE_API_TOKEN: ${{ inputs.cloudflare-api-token }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ inputs.cloudflare-account-id }}
+        CLOUDFLARE_PROJECT_NAME: ${{ inputs.cloudflare-project-name }}
 
     - uses: pnpm/action-setup@v3
 
@@ -54,13 +66,9 @@ runs:
 
     - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
       with:
-        cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+        cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
+        cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
+        cloudflare-project-name: ${{ inputs.cloudflare-project-name }}
         directory: ${{ inputs.public-path }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ inputs.github-token }}
         github-environment: ${{ inputs.environment }}
-      env:
-        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
