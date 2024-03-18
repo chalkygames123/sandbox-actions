@@ -39,7 +39,7 @@ runs:
 
     - id: set-build-artifact-name
       name: Set build artifact name
-      run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
+      run: echo "build-artifact-name=$GITHUB_RUN_ID-$PROJECT-build-artifact-run" >> "$GITHUB_OUTPUT"
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
