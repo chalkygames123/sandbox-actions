@@ -82,6 +82,7 @@ jobs:
       - build
     if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
     runs-on: ubuntu-latest
+    environment: ${{ needs.prepare.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
 
