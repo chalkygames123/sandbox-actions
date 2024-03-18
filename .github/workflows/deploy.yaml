@@ -58,10 +58,10 @@ jobs:
         with:
           name: ${{ inputs.build-artifact-name }}
 
-      - name: Untar build artifacts
-        run: tar xvf "$BUILD_ARTIFACTS_NAME".tar
+      - name: Untar build artifact
+        run: tar xvf "$BUILD_ARTIFACT_NAME".tar
         env:
-          BUILD_ARTIFACTS_NAME: ${{ inputs.build-artifact-name }}
+          BUILD_ARTIFACT_NAME: ${{ inputs.build-artifact-name }}
 
       - uses: unlike-ltd/github-actions-cloudflare-pages@8c09c46bd39321b4aa3784852491d9e4f09e1566 # v1.2.0
         with:

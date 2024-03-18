@@ -38,15 +38,15 @@ runs:
         PROJECT: ${{ inputs.project }}
 
     - id: set-build-artifact-name
-      name: Set build artifacts name
-      run: echo "build-artifact-name=build-artifacts-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
+      name: Set build artifact name
+      run: echo "build-artifact-name=build-artifact-run-$GITHUB_RUN_ID-$PROJECT" >> "$GITHUB_OUTPUT"
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
 
-    - name: Tar build artifacts
+    - name: Tar build artifact
       run: |
-        mapfile -t args <<< "$(echo "$BUILD_ARTIFACTS_PATH" | grep '[^[:space:]]')"
+        mapfile -t args <<< "$(echo "$BUILD_ARTIFACT_PATH" | grep '[^[:space:]]')"
         tar cvf "$BUILD_ARTIFACT_NAME".tar "${args[@]}"
       shell: bash
       env:
