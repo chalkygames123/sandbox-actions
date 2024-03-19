@@ -69,6 +69,6 @@ runs:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
         cloudflare-project-name: ${{ inputs.cloudflare-project-name }}
-        directory: ${{ inputs.public-path }}
+        directory: ${{ inputs.directory-path }}
         github-token: ${{ inputs.github-token }}
         github-environment: ${{ inputs.github-environment }}
