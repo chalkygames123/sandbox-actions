@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - apps/admin/
+      - apps/admin/**
   # workflow_dispatch:
   #   inputs:
   #     force-deploy:
