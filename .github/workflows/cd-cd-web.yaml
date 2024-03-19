@@ -7,11 +7,11 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      force-deploy:
-        description: Force deploy
-        type: boolean
+  # workflow_dispatch:
+  #   inputs:
+  #     force-deploy:
+  #       description: Force deploy
+  #       type: boolean
 
 defaults:
   run:
@@ -80,7 +80,8 @@ jobs:
     needs:
       - prepare
       - build
-    if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
+    # if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
+    if: needs.prepare.outputs.source-files-changed == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.prepare.outputs.environment }}
     steps:
@@ -90,10 +91,10 @@ jobs:
         with:
           app: web
           build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
-          public-path: apps/web/dist/
-          environment: ${{ needs.prepare.outputs.environment }}
+          directory-path: apps/web/dist/
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: ${{ needs.prepare.outputs.environment }}
     timeout-minutes: 5

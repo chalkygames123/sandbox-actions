@@ -4,16 +4,13 @@ description: Deploy an app
 
 inputs:
   app:
-    description: The app to deploy
+    description: The name of the app to deploy
     required: true
   build-artifact-name:
-    description: The name of the build artifact to deploy
+    description: The name of the build artifact to download
     required: true
-  public-path:
-    description: The path to the public directory
-    required: true
-  environment:
-    description: The environment to deploy to
+  directory-path:
+    description: The path to the directory of static files to upload
     required: true
   cloudflare-api-token:
     description: The Cloudflare API token
@@ -22,10 +19,13 @@ inputs:
     description: The Cloudflare account ID
     required: true
   cloudflare-project-name:
-    description: The Cloudflare project name
+    description: The Cloudflare project name to deploy to
     required: true
   github-token:
-    description: The GitHub token
+    description: The GITHUB_TOKEN secret
+    required: true
+  github-environment:
+    description: The GitHub environment to deploy to
     required: true
 
 runs:
@@ -71,4 +71,4 @@ runs:
         cloudflare-project-name: ${{ inputs.cloudflare-project-name }}
         directory: ${{ inputs.public-path }}
         github-token: ${{ inputs.github-token }}
-        github-environment: ${{ inputs.environment }}
+        github-environment: ${{ inputs.github-environment }}
