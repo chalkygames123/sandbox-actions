@@ -64,7 +64,7 @@ runs:
       env:
         BUILD_ARTIFACT_NAME: ${{ inputs.build-artifact-name }}
 
-    - uses: unlike-ltd/github-actions-cloudflare-pages@159278d1b12c975d1d5e538720e4da343131ede3 # v1.3.0
+    - uses: unlike-ltd/github-actions-cloudflare-pages@daec2069ce25d02fff9531b47421c95d2f2617b6 # v1.3.1
       with:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
