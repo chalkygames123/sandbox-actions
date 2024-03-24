@@ -32,6 +32,10 @@ runs:
           fi
 
           if [[ $prefix =~ !$ || $type =~ ^(feat|fix|perf)$ ]]; then
+            if [[ $scope && $scope != "$PROJECT" ]]; then
+              continue
+            fi
+
             echo 'needs-deploy=true' >> "$GITHUB_OUTPUT"
 
             exit 0
@@ -41,4 +45,5 @@ runs:
         echo 'needs-deploy=false' >> "$GITHUB_OUTPUT"
       shell: bash
       env:
+        PROJECT: ${{ inputs.project }}
         COMMITS: ${{ toJSON(github.event.commits) }}
