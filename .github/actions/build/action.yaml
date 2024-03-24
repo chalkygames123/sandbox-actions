@@ -36,7 +36,7 @@ runs:
         PROJECT: ${{ inputs.project }}
 
     - id: set-build-artifact-name
-      name: Set build artifact name
+      name: Set output build-artifact-name
       run: echo "build-artifact-name=$PROJECT-build-artifact-run-$GITHUB_RUN_ID" >> "$GITHUB_OUTPUT"
       shell: bash
       env:

@@ -19,6 +19,7 @@ runs:
   using: composite
   steps:
     - id: set-needs-deploy
+      name: Set output needs-deploy
       run: |
         mapfile -t messages < <(jq '.[].message' -r <<< "$COMMITS")
 
