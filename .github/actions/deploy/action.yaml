@@ -9,12 +9,6 @@ inputs:
   build-artifact-name:
     description: The name of the build artifact to download
     required: true
-  directory-path:
-    description: The path to the directory of static files to upload
-    required: true
-  working-directory:
-    description: The working directory to run the deployment from
-    required: true
   cloudflare-api-token:
     description: The Cloudflare API token
     required: true
@@ -24,11 +18,17 @@ inputs:
   cloudflare-project-name:
     description: The Cloudflare project name to deploy to
     required: true
+  directory:
+    description: The directory of static files to upload
+    required: true
   github-token:
     description: The GITHUB_TOKEN secret
     required: true
   github-environment:
     description: The GitHub environment to deploy to
+    required: true
+  working-directory:
+    description: The working directory to run the deployment from
     required: true
 
 runs:
@@ -72,7 +72,7 @@ runs:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
         cloudflare-project-name: ${{ inputs.cloudflare-project-name }}
-        directory: ${{ inputs.directory-path }}
+        directory: ${{ inputs.directory }}
         github-token: ${{ inputs.github-token }}
         github-environment: ${{ inputs.github-environment }}
         working-directory: ${{ inputs.working-directory }}
