@@ -12,6 +12,9 @@ inputs:
   directory-path:
     description: The path to the directory of static files to upload
     required: true
+  working-directory:
+    description: The working directory to run the deployment from
+    required: true
   cloudflare-api-token:
     description: The Cloudflare API token
     required: true
@@ -64,7 +67,7 @@ runs:
       env:
         BUILD_ARTIFACT_NAME: ${{ inputs.build-artifact-name }}
 
-    - uses: unlike-ltd/github-actions-cloudflare-pages@daec2069ce25d02fff9531b47421c95d2f2617b6 # v1.3.1
+    - uses: unlike-ltd/github-actions-cloudflare-pages@fb5958dd486c5c2cb38b3a843e1efb160878060d # v1.3.2
       with:
         cloudflare-api-token: ${{ inputs.cloudflare-api-token }}
         cloudflare-account-id: ${{ inputs.cloudflare-account-id }}
@@ -72,3 +75,4 @@ runs:
         directory: ${{ inputs.directory-path }}
         github-token: ${{ inputs.github-token }}
         github-environment: ${{ inputs.github-environment }}
+        working-directory: ${{ inputs.working-directory }}

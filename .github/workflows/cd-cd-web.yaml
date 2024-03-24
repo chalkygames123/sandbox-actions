@@ -92,6 +92,7 @@ jobs:
           app: web
           build-artifact-name: ${{ needs.build.outputs.build-artifact-name }}
           directory-path: apps/web/dist/
+          working-directory: apps/web/
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}

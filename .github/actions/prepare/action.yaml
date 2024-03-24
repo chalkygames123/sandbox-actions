@@ -18,6 +18,7 @@ outputs:
 runs:
   using: composite
   steps:
+    # Determine whether the project needs to be deployed by following the default release rules of the commit-analyzer plugin for semantic-release. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
     - id: set-needs-deploy
       name: Set output needs-deploy
       run: |
