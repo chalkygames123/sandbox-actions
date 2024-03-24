@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.prepare.outputs.environment }}
-      source-files-changed: ${{ steps.prepare.outputs.source-files-changed }}
+      needs-deploy: ${{ steps.prepare.outputs.needs-deploy }}
     steps:
       - uses: actions/checkout@v4
 
@@ -82,8 +82,8 @@ jobs:
     needs:
       - prepare
       - build
-    # if: inputs.force-deploy || needs.prepare.outputs.source-files-changed == 'true'
-    if: needs.prepare.outputs.source-files-changed == 'true'
+    # if: inputs.force-deploy || needs.prepare.outputs.needs-deploy == 'true'
+    if: needs.prepare.outputs.needs-deploy == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.prepare.outputs.environment }}
     steps:

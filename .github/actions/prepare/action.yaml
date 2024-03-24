@@ -11,14 +11,34 @@ outputs:
   environment:
     description: The environment to deploy to
     value: ${{ inputs.project }} ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
-  source-files-changed:
-    description: Whether the source files have changed
-    value: ${{ steps.filter.outputs.source }}
+  needs-deploy:
+    description: Whether the project needs to be deployed
+    value: ${{ steps.set-needs-deploy.outputs.needs-deploy }}
 
 runs:
   using: composite
   steps:
-    - id: filter
-      uses: dorny/paths-filter@v3
-      with:
-        filters: .github/filters/${{ inputs.project }}.yaml
+    - id: set-needs-deploy
+      run: |
+        mapfile -t messages < <(jq '.[].message' -r <<< "$COMMITS")
+
+        for message in "${messages[@]}"; do
+          prefix="${message%%:*}"
+          type="${prefix%%[(!]*}"
+          scope="$(awk -F '[()]' '{print $2}' <<< "$prefix")"
+
+          if [[ $scope == 'no-release' ]]; then
+            continue
+          fi
+
+          if [[ $prefix =~ !$ || $type =~ ^(feat|fix|perf)$ ]]; then
+            echo 'needs-deploy=true' >> "$GITHUB_OUTPUT"
+
+            exit 0
+          fi
+        done
+
+        echo 'needs-deploy=false' >> "$GITHUB_OUTPUT"
+      shell: bash
+      env:
+        COMMITS: ${{ toJSON(github.event.commits) }}

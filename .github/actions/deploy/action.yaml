@@ -59,7 +59,7 @@ runs:
         name: ${{ inputs.build-artifact-name }}
 
     - name: Untar build artifact
-      run: tar xvf "$BUILD_ARTIFACT_NAME".tar
+      run: tar xvf "${BUILD_ARTIFACT_NAME}.tar"
       shell: bash
       env:
         BUILD_ARTIFACT_NAME: ${{ inputs.build-artifact-name }}

@@ -44,8 +44,8 @@ runs:
 
     - name: Tar build artifact
       run: |
-        mapfile -t args <<< "$(echo "$BUILD_ARTIFACT_PATH" | grep '[^[:space:]]')"
-        tar cvf "$BUILD_ARTIFACT_NAME".tar "${args[@]}"
+        mapfile -t args < <(grep '[^[:space:]]' <<< "$BUILD_ARTIFACT_PATH")
+        tar cvf "${BUILD_ARTIFACT_NAME}.tar" "${args[@]}"
       shell: bash
       env:
         BUILD_ARTIFACT_PATH: ${{ inputs.build-artifact-content-path }}
