@@ -27,7 +27,7 @@ jobs:
       - run: echo "$HOME"
       - run: echo ~
       - run: touch "$HOME/var"
-      - run: touch "~/tilde"
+      - run: touch ~/tilde
       - run: ls -la "$HOME"
       - run: ls -la ~
       - run: exit 1
