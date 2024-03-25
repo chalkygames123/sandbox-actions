@@ -21,48 +21,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 
 jobs:
-  home:
-    runs-on: ubuntu-latest
-    env:
-      CLASP_ACCESS_TOKEN: ${{ secrets.CLASP_ACCESS_TOKEN }}
-      CLASP_CLIENT_SECRET: ${{ secrets.CLASP_CLIENT_SECRET }}
-      CLASP_ID_TOKEN: ${{ secrets.CLASP_ID_TOKEN }}
-      CLASP_REFRESH_TOKEN: ${{ secrets.CLASP_REFRESH_TOKEN }}
-      CLASP_CLIENT_ID: ${{ vars.CLASP_CLIENT_ID }}
-      CLASP_EXPIRY_DATE: ${{ vars.CLASP_EXPIRY_DATE }}
-      SCRIPT_ID: ${{ vars.SCRIPT_ID }}
-    steps:
-      - name: Create .clasprc.json
-        run: |
-          EOF="$(uuidgen)"
-
-          cat << $EOF > ~/.clasprc.json
-          {
-            "token": {
-              "access_token": "$CLASP_ACCESS_TOKEN",
-              "refresh_token": "$CLASP_REFRESH_TOKEN",
-              "scope": "https://www.googleapis.com/auth/script.webapp.deploy openid https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/logging.read https://www.googleapis.com/auth/script.projects https://www.googleapis.com/auth/service.management https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/script.deployments https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/cloud-platform",
-              "token_type": "Bearer",
-              "id_token": "$CLASP_ID_TOKEN",
-              "expiry_date": "$CLASP_EXPIRY_DATE"
-            },
-            "oauth2ClientSettings": {
-              "clientId": "$CLASP_CLIENT_ID",
-              "clientSecret": "$CLASP_CLIENT_SECRET",
-              "redirectUri": "http://localhost"
-            },
-            "isLocalCreds": false
-          }
-          $EOF
-      - run: cat ~/.clasprc.json
-      - run: exit 1
   prepare:
     name: Prepare
     permissions:
       contents: read
       pull-requests: read
-    needs:
-      - home
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.prepare.outputs.environment }}
