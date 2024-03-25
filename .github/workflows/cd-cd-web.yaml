@@ -24,11 +24,11 @@ jobs:
   home:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "$HOME"
-      - run: echo ~
       - run: touch "$HOME/var"
       - run: touch ~/tilde
-      - run: ls -la "$HOME"
+      - run: |
+          cat << EOF > "$HOME/heredoc"
+          EOF
       - run: ls -la ~
       - run: exit 1
   prepare:
@@ -36,6 +36,8 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+    needs:
+      - home
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.prepare.outputs.environment }}
