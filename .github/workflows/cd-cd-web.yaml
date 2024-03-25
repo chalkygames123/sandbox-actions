@@ -21,6 +21,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 
 jobs:
+  home:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "$HOME"
+      - run: echo ~
+      - run: touch "$HOME/var"
+      - run: touch "~/tilde"
+      - run: ls -la "$HOME"
+      - run: ls -la ~
+      - run: exit 1
   prepare:
     name: Prepare
     permissions:
