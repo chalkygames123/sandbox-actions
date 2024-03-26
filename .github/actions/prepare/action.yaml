@@ -18,7 +18,8 @@ outputs:
 runs:
   using: composite
   steps:
-    # Determine whether the project needs to be deployed by following the default release rules of the commit-analyzer plugin for semantic-release. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
+    # Follow the default release rules of the commit-analyzer plugin for semantic release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
+    # Additionally, if a commit message has one or more scopes, they are checked against the project name.
     - id: set-needs-deploy
       name: Set output needs-deploy
       run: |
@@ -27,20 +28,22 @@ runs:
         for message in "${messages[@]}"; do
           prefix="${message%%:*}"
           type="${prefix%%[(!]*}"
-          scope="$(awk -F '[()]' '{print $2}' <<< "$prefix")"
+          mapfile -t scopes < <(awk -F '[()]' '{print $2}' <<< "$prefix" | awk -F '[/\\\\,]' '{ for (i = 1; i <= NF; i++) print $i }' | awk '{$1=$1};1')
 
-          if [[ $scope == 'no-release' ]]; then
-            continue
-          fi
+          for scope in "${scopes[@]}"; do
+            if [[ $scope == 'no-release' ]]; then
+              continue 2
+            fi
+          done
 
           if [[ $prefix =~ !$ || $type =~ ^(feat|fix|perf)$ ]]; then
-            if [[ $scope && $scope != "$PROJECT" ]]; then
-              continue
-            fi
+            for scope in "${scopes[@]}"; do
+              if [[ $scope == "$PROJECT" ]]; then
+                echo 'needs-deploy=true' >> "$GITHUB_OUTPUT"
 
-            echo 'needs-deploy=true' >> "$GITHUB_OUTPUT"
-
-            exit 0
+                exit 0
+              fi
+            done
           fi
         done
 
