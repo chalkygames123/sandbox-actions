@@ -23,9 +23,9 @@ runs:
     - id: set-needs-deploy
       name: Set output needs-deploy
       run: |
-        git log -n 10 "$BASE"
-        git log -n 10 "$HEAD"
-        git log -n 10 "$BASE..$HEAD"
+        git log -n 3 --oneline "$BASE"
+        git log -n 3 --oneline "$HEAD"
+        git log -n 3 --oneline "$BASE..$HEAD"
 
         mapfile -t messages < <(git log --pretty=format:"%s" "$BASE..$HEAD")
 
