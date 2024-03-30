@@ -31,7 +31,7 @@ jobs:
       environment: ${{ steps.prepare.outputs.environment }}
       needs-deploy: ${{ steps.prepare.outputs.needs-deploy }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - id: prepare
         uses: ./.github/actions/prepare
@@ -45,7 +45,7 @@ jobs:
       - prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: ./.github/actions/check
     timeout-minutes: 5
@@ -60,7 +60,7 @@ jobs:
     outputs:
       build-artifact-name: ${{ steps.build.outputs.build-artifact-name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - id: build
         uses: ./.github/actions/build
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ needs.prepare.outputs.environment }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: ./.github/actions/deploy
         with:

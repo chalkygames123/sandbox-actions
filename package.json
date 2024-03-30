@@ -8,6 +8,6 @@
 		"node": "21.6.1"
 	},
 	"devDependencies": {
-		"typescript": "^5.4.3"
+		"typescript": "5.4.3"
 	}
 }
