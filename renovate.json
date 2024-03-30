@@ -1,0 +1,35 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:best-practices",
+		":maintainLockFilesMonthly",
+		":pinAllExceptPeerDependencies",
+		"group:nodeJs",
+		"schedule:nonOfficeHours"
+	],
+	"packageRules": [
+		{
+			"matchDepTypes": ["packageManager"],
+			"pinDigests": true
+		},
+		{
+			"additionalBranchPrefix": "{{ parentDir }}-",
+			"matchFileNames": ["apps/**", "packages/**"],
+			"matchManagers": ["npm"],
+			"semanticCommitScope": "deps, {{ parentDir }}"
+		},
+		{
+			"automerge": true,
+			"matchCurrentVersion": "!/^0/",
+			"matchUpdateTypes": [
+				"minor",
+				"patch",
+				"pin",
+				"pinDigest",
+				"digest",
+				"lockFileMaintenance"
+			]
+		}
+	],
+	"timezone": "Asia/Tokyo"
+}

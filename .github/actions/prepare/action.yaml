@@ -18,12 +18,12 @@ outputs:
 runs:
   using: composite
   steps:
-    # Follow the default release rules of the commit-analyzer plugin for semantic release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
-    # Additionally, if a commit message has one or more scopes, they are checked against the project name.
+    # Check the commit message prefix following the default release rules of the commit-analyzer plugin for semantic-release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
+    # The commit messages with one or more scopes are checked against the project name.
     - id: set-needs-deploy
       name: Set output needs-deploy
       run: |
-        mapfile -t messages < <(jq '.[].message' -r <<< "$COMMITS")
+        mapfile -t messages < <(git log --pretty=format:"%s" "$BASE..$HEAD")
 
         for message in "${messages[@]}"; do
           prefix="${message%%:*}"
@@ -51,4 +51,5 @@ runs:
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
-        COMMITS: ${{ toJSON(github.event.commits) }}
+        BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        HEAD: ${{ github.event.pull_request.head.sha || github.event.after }}

@@ -55,6 +55,7 @@ jobs:
     needs:
       - prepare
       - check
+    if: needs.prepare.outputs.needs-deploy == 'true'
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.build.outputs.build-artifact-name }}
