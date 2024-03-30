@@ -51,5 +51,5 @@ runs:
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
-        BASE: ${{ github.event.pull_request.base.ref || github.event.before }}
-        HEAD: ${{ github.event.pull_request.head.ref || github.event.after }}
+        BASE: ${{ github.base_ref || github.event.before }}
+        HEAD: ${{ github.head_ref || github.event.after }}
