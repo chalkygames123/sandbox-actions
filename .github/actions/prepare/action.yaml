@@ -56,4 +56,4 @@ runs:
       env:
         PROJECT: ${{ inputs.project }}
         BASE: ${{ github.base_ref || github.event.before }}
-        HEAD: ${{ github.head_ref || github.event.after }}
+        HEAD: ${{ github.ref || github.event.after }}
