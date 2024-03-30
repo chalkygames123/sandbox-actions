@@ -32,6 +32,9 @@ jobs:
       needs-deploy: ${{ steps.prepare.outputs.needs-deploy }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          filter: tree:0
+          fetch-depth: 0
 
       - id: prepare
         uses: ./.github/actions/prepare
