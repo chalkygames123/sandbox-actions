@@ -22,6 +22,7 @@ runs:
         git log -n 10 "$BASE"
         git log -n 10 "$HEAD"
         git log -n 10 "$BASE..$HEAD"
+      shell: bash
 
     # Check the commit message prefix following the default release rules of the commit-analyzer plugin for semantic-release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
     # The commit messages with one or more scopes are checked against the project name.
