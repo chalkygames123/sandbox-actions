@@ -1,0 +1,42 @@
+name: Delete deployments
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  delete-deployments:
+    name: Delete deployments
+    permissions:
+      actions: read
+      deployments: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    environment: admin  (preview)
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+    steps:
+      - name: Check if required variables are defined
+        run: |
+          echo "CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?secret is not defined}"
+          echo "CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID:?configuration variable is not defined}"
+          echo "CLOUDFLARE_PROJECT_NAME: ${CLOUDFLARE_PROJECT_NAME:?configuration variable is not defined}"
+
+      - uses: unlike-ltd/github-actions-cloudflare-pages@fb5958dd486c5c2cb38b3a843e1efb160878060d # v1.3.2
+        with:
+          cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: '*'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-environment: '*'
+    timeout-minutes: 5
