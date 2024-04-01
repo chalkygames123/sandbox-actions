@@ -40,5 +40,5 @@ jobs:
           cloudflare-project-name: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           directory: '*'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-environment: '*'
+          github-environment: admin (preview)
     timeout-minutes: 5
