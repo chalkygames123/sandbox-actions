@@ -1,9 +1,14 @@
 name: CI/CD (web)
 
 on:
+  merge_group:
+    types:
+      - checks_requested
   pull_request:
     branches:
       - main
+    paths:
+      - apps/web/**
   push:
     branches:
       - main

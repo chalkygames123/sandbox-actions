@@ -2,11 +2,12 @@ name: Delete deployments (web)
 
 on:
   pull_request:
+    branches:
+      - main
+    paths:
+      - apps/web/**
     types:
       - closed
-    branches:
-      - '**'
-      - '!main'
 
 defaults:
   run:

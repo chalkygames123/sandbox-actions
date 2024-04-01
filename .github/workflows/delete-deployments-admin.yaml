@@ -2,11 +2,12 @@ name: Delete deployments (admin)
 
 on:
   pull_request:
+    branches:
+      - main
+    paths:
+      - apps/admin/**
     types:
       - closed
-    branches:
-      - '**'
-      - '!main'
 
 defaults:
   run:
