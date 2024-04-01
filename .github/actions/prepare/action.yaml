@@ -31,7 +31,6 @@ runs:
         echo "github.event.pull_request.head.ref: ${{ github.event.pull_request.head.ref }}"
         echo "github.event.before: ${{ github.event.before }}"
         echo "github.event.after: ${{ github.event.after }}"
-
         git branch --all --verbose --verbose
 
         mapfile -t messages < <(git log --pretty=format:"%s" "$BASE..$HEAD")
@@ -62,5 +61,5 @@ runs:
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
-        BASE: ${{ github.base_ref || github.event.before }}
-        HEAD: ${{ github.head_ref || github.event.after }}
+        BASE: ${{ github.base_ref && format('origin/{0}', github.base_ref) || github.event.before }}
+        HEAD: ${{ github.head_ref && format('origin/{0}', github.head_ref) || github.event.after }}
