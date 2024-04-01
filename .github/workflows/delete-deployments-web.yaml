@@ -38,7 +38,7 @@ jobs:
         with:
           project: web
 
-      - if: ${{ steps.analyze-commits.outputs.needs-deploy }}
+      - if: ${{ steps.analyze-commits.outputs.needs-deploy == 'true' }}
         uses: unlike-ltd/github-actions-cloudflare-pages@fb5958dd486c5c2cb38b3a843e1efb160878060d # v1.3.2
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
