@@ -13,45 +13,12 @@ outputs:
     value: ${{ inputs.project }} ${{ github.ref_name == github.event.repository.default_branch && '(production)' || '(preview)' }}
   needs-deploy:
     description: Whether the project needs to be deployed
-    value: ${{ steps.set-needs-deploy.outputs.needs-deploy }}
+    value: ${{ steps.analyze-commits.outputs.needs-deploy }}
 
 runs:
   using: composite
   steps:
-    # Check the commit message prefix following the default release rules of the commit-analyzer plugin for semantic-release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
-    # The commit messages with one or more scopes are checked against the project name.
-    - id: set-needs-deploy
-      name: Set output needs-deploy
-      run: |
-        git branch --all --verbose --verbose
-
-        mapfile -t messages < <(git log --pretty=format:"%s" "$BASE..$HEAD")
-
-        for message in "${messages[@]}"; do
-          prefix="${message%%:*}"
-          type="${prefix%%[(!]*}"
-          mapfile -t scopes < <(awk -F '[()]' '{print $2}' <<< "$prefix" | awk -F '[/\\\\,]' '{ for (i = 1; i <= NF; i++) print $i }' | awk '{$1=$1};1')
-
-          for scope in "${scopes[@]}"; do
-            if [[ $scope == 'no-release' ]]; then
-              continue 2
-            fi
-          done
-
-          if [[ $prefix =~ !$ || $type =~ ^(feat|fix|perf)$ ]]; then
-            for scope in "${scopes[@]}"; do
-              if [[ $scope == "$PROJECT" ]]; then
-                echo 'needs-deploy=true' >> "$GITHUB_OUTPUT"
-
-                exit 0
-              fi
-            done
-          fi
-        done
-
-        echo 'needs-deploy=false' >> "$GITHUB_OUTPUT"
-      shell: bash
-      env:
-        PROJECT: ${{ inputs.project }}
-        BASE: ${{ github.base_ref && format('origin/{0}', github.base_ref) || github.event.before }}
-        HEAD: ${{ github.head_ref && format('origin/{0}', github.head_ref) || github.event.after }}
+    - id: analyze-commits
+      uses: ./.github/actions/analyze-commits
+      with:
+        project: ${{ inputs.project }}
