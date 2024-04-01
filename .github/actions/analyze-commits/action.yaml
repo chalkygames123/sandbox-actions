@@ -61,5 +61,5 @@ runs:
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
-        BASE: ${{ github.event_name == 'pull_request' && (github.event.action == 'closed' && github.event.base.ref || format('origin/{0}', github.base_ref)) || github.event_name == 'push' && github.event.before }}
-        HEAD: ${{ github.event_name == 'pull_request' && (github.event.action == 'closed' && github.event.head.ref || format('origin/{0}', github.head_ref)) || github.event_name == 'push' && github.event.after }}
+        BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event_name == 'push' && github.event.before }}
+        HEAD: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.head_ref) || github.event_name == 'push' && github.event.after }}
