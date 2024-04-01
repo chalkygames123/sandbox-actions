@@ -4,10 +4,18 @@
 		"config:best-practices",
 		":maintainLockFilesMonthly",
 		":pinAllExceptPeerDependencies",
-		"group:nodeJs",
-		"schedule:nonOfficeHours"
+		"schedule:earlyMondays"
 	],
 	"packageRules": [
+		{
+			"automerge": true,
+			"matchCurrentVersion": "!/^0/",
+			"matchUpdateTypes": ["minor", "patch"]
+		},
+		{
+			"automerge": true,
+			"matchUpdateTypes": ["pin", "pinDigest", "digest", "lockFileMaintenance"]
+		},
 		{
 			"matchDepTypes": ["packageManager"],
 			"pinDigests": true
@@ -17,18 +25,6 @@
 			"matchFileNames": ["apps/**", "packages/**"],
 			"matchManagers": ["npm"],
 			"semanticCommitScope": "deps, {{ parentDir }}"
-		},
-		{
-			"automerge": true,
-			"matchCurrentVersion": "!/^0/",
-			"matchUpdateTypes": [
-				"minor",
-				"patch",
-				"pin",
-				"pinDigest",
-				"digest",
-				"lockFileMaintenance"
-			]
 		}
 	],
 	"timezone": "Asia/Tokyo"

@@ -3,11 +3,14 @@
 		"check": "pnpm run --recursive check",
 		"check:apply": "pnpm run --recursive check:apply"
 	},
-	"packageManager": "pnpm@8.15.5",
-	"engines": {
-		"node": "21.7.1"
-	},
 	"devDependencies": {
 		"typescript": "5.4.3"
+	},
+	"packageManager": "pnpm@8.14.3+sha256.2d0363bb6c314daa67087ef07743eea1ba2e2d360c835e8fec6b5575e4ed9484",
+	"engines": {
+		"node": "21.6.2"
+	},
+	"volta": {
+		"node": "21.6.2"
 	}
 }
