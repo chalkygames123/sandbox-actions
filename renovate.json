@@ -22,7 +22,7 @@
 		},
 		{
 			"additionalBranchPrefix": "{{ parentDir }}-",
-			"matchFileNames": ["apps/**", "packages/**"],
+			"matchFileNames": ["apps/*/package.json", "packages/*/package.json"],
 			"matchManagers": ["npm"],
 			"semanticCommitScope": "deps, {{ parentDir }}"
 		}
