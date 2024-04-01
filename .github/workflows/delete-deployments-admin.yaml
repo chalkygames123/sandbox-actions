@@ -31,7 +31,8 @@ jobs:
           echo "CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID:?configuration variable is not defined}"
           echo "CLOUDFLARE_PROJECT_NAME: ${CLOUDFLARE_PROJECT_NAME:?configuration variable is not defined}"
 
-      - uses: unlike-ltd/github-actions-cloudflare-pages@fb5958dd486c5c2cb38b3a843e1efb160878060d # v1.3.2
+      - if: ${{ github.ref_name != 'main' }}
+        uses: unlike-ltd/github-actions-cloudflare-pages@fb5958dd486c5c2cb38b3a843e1efb160878060d # v1.3.2
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           cloudflare-account-id: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
