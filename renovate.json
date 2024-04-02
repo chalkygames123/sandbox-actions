@@ -17,10 +17,6 @@
 			"matchUpdateTypes": ["pin", "pinDigest", "digest", "lockFileMaintenance"]
 		},
 		{
-			"matchDepTypes": ["packageManager"],
-			"pinDigests": true
-		},
-		{
 			"additionalBranchPrefix": "{{ parentDir }}-",
 			"matchFileNames": ["apps/**", "packages/**"],
 			"matchManagers": ["npm"],
