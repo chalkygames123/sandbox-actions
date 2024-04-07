@@ -4,7 +4,7 @@
 		"check:apply": "pnpm run --recursive check:apply"
 	},
 	"devDependencies": {
-		"typescript": "5.4.3"
+		"typescript": "5.4.4"
 	},
 	"packageManager": "pnpm@8.15.6",
 	"engines": {
