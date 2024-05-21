@@ -15,17 +15,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - run: |
-        echo "github.sha: $GITHUB_SHA"
-        echo "github.ref: $GITHUB_REF"
-        echo "github.base_ref: $GITHUB_BASE_REF"
-        echo "github.head_ref: $GITHUB_HEAD_REF"
-        echo "github.event.pull_request.base.ref: ${{ github.event.pull_request.base.ref }}"
-        echo "github.event.pull_request.head.ref: ${{ github.event.pull_request.head.ref }}"
-        echo "github.event.before: ${{ github.event.before }}"
-        echo "github.event.after: ${{ github.event.after }}"
-      shell: bash
-
     # Check the commit prefix following the default release rules of the commit-analyzer plugin for semantic-release to determine whether the project needs to be deployed. For more information, see https://github.com/semantic-release/commit-analyzer#default-rules-matching.
     # The commits with one or more scopes are checked against the project name.
     - id: set-needs-deploy
