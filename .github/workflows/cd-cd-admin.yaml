@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+  # See: https://github.com/andykenward/github-actions-cloudflare-pages/pull/347
   # workflow_dispatch:
   #   inputs:
   #     force-deploy:
@@ -74,6 +75,7 @@ jobs:
           build-artifact-content-path: |
             apps/admin/dist/
             apps/admin/stats.html
+          upload-artifact: ${{ needs.prepare.outputs.needs-deploy }}
     timeout-minutes: 5
 
   deploy:
@@ -86,7 +88,7 @@ jobs:
     needs:
       - prepare
       - build
-    # if: inputs.force-deploy || needs.prepare.outputs.needs-deploy == 'true'
+    # if: inputs.force-deploy || needs.prepare.outputs.needs-deploy == 'true' # See: https://github.com/andykenward/github-actions-cloudflare-pages/pull/347
     if: needs.prepare.outputs.needs-deploy == 'true'
     runs-on: ubuntu-latest
     environment: ${{ needs.prepare.outputs.environment }}
