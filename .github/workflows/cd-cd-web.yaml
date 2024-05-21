@@ -62,6 +62,7 @@ jobs:
     needs:
       - prepare
       - check
+    if: needs.prepare.outputs.needs-deploy == 'true'
     runs-on: ubuntu-latest
     outputs:
       build-artifact-name: ${{ steps.build.outputs.build-artifact-name }}
@@ -75,7 +76,6 @@ jobs:
           build-artifact-content-path: |
             apps/web/dist/
             apps/web/stats.html
-          upload-artifact: ${{ needs.prepare.outputs.needs-deploy }}
     timeout-minutes: 5
 
   deploy:
