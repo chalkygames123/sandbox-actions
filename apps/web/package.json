@@ -1,8 +1,10 @@
 {
 	"name": "web",
 	"scripts": {
+		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\"",
 		"check": "echo \"no check specified\"",
-		"build": "node -e \"fs.cpSync('src', 'dist', { recursive: true }); fs.writeFileSync('stats.html', '')\""
+		"generate:types": "echo \"no generate:types specified\"",
+		"lint": "echo \"no lint specified\""
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "4.20240512.0",

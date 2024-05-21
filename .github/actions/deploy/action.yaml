@@ -47,17 +47,17 @@ runs:
 
     - uses: pnpm/action-setup@v3
 
-    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         cache: pnpm
         node-version-file: package.json
 
-    - run: pnpm install --filter="$APP"
+    - run: pnpm --filter="$APP" install
       shell: bash
       env:
         APP: ${{ inputs.app }}
 
-    - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4
+    - uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
       with:
         name: ${{ inputs.build-artifact-name }}
 

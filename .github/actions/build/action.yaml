@@ -20,17 +20,22 @@ runs:
   steps:
     - uses: pnpm/action-setup@v3
 
-    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         cache: pnpm
         node-version-file: package.json
 
-    - run: pnpm install --filter="$PROJECT"
+    - run: pnpm --filter="$PROJECT" install
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
 
-    - run: pnpm run --filter="$PROJECT" build
+    - run: pnpm --filter="$PROJECT" run generate:types
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - run: pnpm --filter="$PROJECT" run build
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
@@ -51,7 +56,7 @@ runs:
         BUILD_ARTIFACT_PATH: ${{ inputs.build-artifact-content-path }}
         BUILD_ARTIFACT_NAME: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
 
-    - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4
+    - uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
       with:
         name: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}
         path: ${{ steps.set-build-artifact-name.outputs.build-artifact-name }}.tar

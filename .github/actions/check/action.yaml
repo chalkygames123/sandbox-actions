@@ -2,18 +2,42 @@ name: Check
 
 description: Check the health of a project
 
+inputs:
+  project:
+    description: The project to check
+    required: true
+
 runs:
   using: composite
   steps:
     - uses: pnpm/action-setup@v3
 
-    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+    - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         cache: pnpm
         node-version-file: package.json
 
-    - run: pnpm install
+    - run: pnpm --filter="$PROJECT" install
       shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
 
-    - run: pnpm run check
+    - run: pnpm run format
       shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - run: pnpm --filter="$PROJECT" run generate:types
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - run: pnpm --filter="$PROJECT" run lint
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+
+    - run: pnpm --filter="$PROJECT" run check
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}

@@ -1,9 +1,22 @@
 {
+	"type": "module",
 	"scripts": {
-		"check": "pnpm run --recursive check",
-		"check:apply": "pnpm run --recursive check:apply"
+		"check": "pnpm --recursive --stream run check",
+		"check:apply": "pnpm --recursive --stream run check:apply",
+		"format": "pnpm --no-bail --stream run \"/^format:(?!write)/\"",
+		"format:editorconfig-checker": "editorconfig-checker",
+		"format:prettier": "prettier . --check",
+		"format:write": "pnpm run format:write:prettier && pnpm run format:write:editorconfig-checker",
+		"format:write:editorconfig-checker": "pnpm run format:editorconfig-checker",
+		"format:write:prettier": "pnpm run format:prettier --write",
+		"generate:types": "pnpm --recursive --stream run generate:types",
+		"lint": "pnpm --recursive --stream --no-bail run lint",
+		"lint:apply": "pnpm --recursive --stream run lint:apply"
 	},
 	"devDependencies": {
+		"editorconfig-checker": "5.1.5",
+		"prettier": "3.2.5",
+		"prettier-plugin-packagejson": "2.5.0",
 		"typescript": "5.4.5"
 	},
 	"packageManager": "pnpm@8.15.8",
