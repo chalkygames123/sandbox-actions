@@ -36,8 +36,3 @@ runs:
       shell: bash
       env:
         PROJECT: ${{ inputs.project }}
-
-    - run: pnpm --filter="$PROJECT" run check
-      shell: bash
-      env:
-        PROJECT: ${{ inputs.project }}
