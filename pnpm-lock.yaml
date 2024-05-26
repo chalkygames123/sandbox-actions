@@ -33,8 +33,8 @@ importers:
         specifier: 4.20240512.0
         version: 4.20240512.0
       hono:
-        specifier: 4.1.7
-        version: 4.1.7
+        specifier: 4.3.11
+        version: 4.3.11
       wrangler:
         specifier: 3.41.0
         version: 3.41.0(@cloudflare/workers-types@4.20240512.0)
@@ -664,8 +664,8 @@ packages:
       function-bind: 1.1.2
     dev: true
 
-  /hono@4.1.7:
-    resolution: {integrity: sha512-Qa9/OM64d3we/COpxpJNT8p2IEvXbvRzp2eX4wf48eDvqoU3pBrnbY6zAF2rK878GxkkfCo6yipZXNsPiTrBMQ==}
+  /hono@4.3.11:
+    resolution: {integrity: sha512-Hle1uNqJJKkebFkFEEWr3UAElJP922Xy0STfl8c+1PH1q+l6WrmhwAJFS6YH8ZWJY4z46qJtssbyVwwPm3dP5w==}
     engines: {node: '>=16.0.0'}
     dev: true
 
