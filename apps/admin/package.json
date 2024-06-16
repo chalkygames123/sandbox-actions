@@ -7,6 +7,6 @@
 		"lint": "echo \"no lint specified\""
 	},
 	"devDependencies": {
-		"wrangler": "3.58.0"
+		"wrangler": "3.60.3"
 	}
 }
