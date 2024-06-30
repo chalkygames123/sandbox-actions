@@ -27,7 +27,7 @@ jobs:
           echo "CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?secret is not defined}"
 
       - if: ${{ github.ref_name != 'main' }}
-        uses: unlike-ltd/github-actions-cloudflare-pages/delete@729e3e59a4977be918c8d7e2ff08ec4e1532d0d6 # v2.3.0
+        uses: unlike-ltd/github-actions-cloudflare-pages/delete@f69d7c2a3ed3bcdbccd58de14ba342d5a4bccb97 # v2.3.1
         with:
           cloudflare-api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
