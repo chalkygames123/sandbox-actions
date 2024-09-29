@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       editorconfig-checker:
-        specifier: 5.1.8
-        version: 5.1.8
+        specifier: 5.1.9
+        version: 5.1.9
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -552,8 +552,8 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /editorconfig-checker@5.1.8:
-    resolution: {integrity: sha512-GM/qCbXA8GajSqqjXiWZN49i0nizQV5PjkVKIwWB9rtsm/pztjnBC+4dts5wW2KdrP2zyMPEltWHtWQwoCadqg==}
+  /editorconfig-checker@5.1.9:
+    resolution: {integrity: sha512-p1XFFxEkhY9Nl+kuMLZA6PzzZ6s+dvy4yBmJD68tC4BwBQdjUh2p1VxA6IbtN5beaX6i7WtHeEsvTK5LF+W+OQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dev: true
