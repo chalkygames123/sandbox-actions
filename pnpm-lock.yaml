@@ -24,8 +24,8 @@ importers:
   apps/admin:
     devDependencies:
       wrangler:
-        specifier: 3.86.0
-        version: 3.86.0
+        specifier: 3.87.0
+        version: 3.87.0
 
   apps/web:
     devDependencies:
@@ -506,6 +506,13 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /chokidar@4.0.1:
+    resolution: {integrity: sha512-n8enUVCED/KVRQlab1hr3MVpcVMvxtZjmEa956u+4YijlmQED223XMSYj2tLuKvr4jcCTzNNMpQDUer72MMmzA==}
+    engines: {node: '>= 14.16.0'}
+    dependencies:
+      readdirp: 4.0.2
+    dev: true
+
   /cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
@@ -889,6 +896,11 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /readdirp@4.0.2:
+    resolution: {integrity: sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA==}
+    engines: {node: '>= 14.16.0'}
+    dev: true
+
   /resolve.exports@2.0.2:
     resolution: {integrity: sha512-X2UW6Nw3n/aMgDVy+0rSqgHlv39WZAlZrXCdnbyEiKm17DSqHX4MmQMaST3FbeWR5FTuRcUwYAziZajji0Y7mg==}
     engines: {node: '>=10'}
@@ -1107,8 +1119,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /wrangler@3.86.0:
-    resolution: {integrity: sha512-jL670AFVPLTILvEjAL165aYM/ZqtZCqT+e6LKiniflRZxSGKu4o/wyHeOmOM6i5kYJHSmF40E4lOZqapDtkF8g==}
+  /wrangler@3.87.0:
+    resolution: {integrity: sha512-BExktnSLeGgG+uxgnr4h9eZ5nefdpTVcTHR+gEIWRvqk07XL04nJwpPYAOIPKPpB7E2tMdDJgNLGQN/CY6e1xQ==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -1122,7 +1134,7 @@ packages:
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
       '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
       blake3-wasm: 2.1.5
-      chokidar: 3.6.0
+      chokidar: 4.0.1
       date-fns: 4.1.0
       esbuild: 0.17.19
       itty-time: 1.0.6
