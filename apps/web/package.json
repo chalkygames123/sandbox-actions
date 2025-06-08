@@ -7,7 +7,7 @@
 		"lint": "echo \"no lint specified\""
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "4.20250525.0",
+		"@cloudflare/workers-types": "4.20250607.0",
 		"hono": "4.7.11",
 		"wrangler": "3.95.0"
 	}
