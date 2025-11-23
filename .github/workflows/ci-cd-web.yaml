@@ -35,7 +35,7 @@ jobs:
       environment: ${{ steps.prepare.outputs.environment }}
       needs-deploy: ${{ steps.prepare.outputs.needs-deploy }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           filter: tree:0
           fetch-depth: 0
@@ -52,7 +52,7 @@ jobs:
       - prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
       - uses: ./.github/actions/check
         with:
@@ -69,7 +69,7 @@ jobs:
     outputs:
       build-artifact-name: ${{ steps.build.outputs.build-artifact-name }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
       - id: build
         uses: ./.github/actions/build
@@ -95,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ needs.prepare.outputs.environment }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
 
       - uses: ./.github/actions/deploy
         with:
