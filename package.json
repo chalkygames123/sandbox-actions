@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"editorconfig-checker": "5.1.9",
-		"prettier": "3.7.4",
+		"prettier": "3.8.1",
 		"prettier-plugin-packagejson": "2.5.22",
 		"typescript": "5.8.3"
 	},
