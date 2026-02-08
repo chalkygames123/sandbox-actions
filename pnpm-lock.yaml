@@ -12,11 +12,11 @@ importers:
         specifier: 5.1.9
         version: 5.1.9
       prettier:
-        specifier: 3.7.4
-        version: 3.7.4
+        specifier: 3.8.1
+        version: 3.8.1
       prettier-plugin-packagejson:
         specifier: 2.5.22
-        version: 2.5.22(prettier@3.7.4)
+        version: 2.5.22(prettier@3.8.1)
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -502,8 +502,8 @@ packages:
       prettier:
         optional: true
 
-  prettier@3.7.4:
-    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
+  prettier@3.8.1:
+    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -944,13 +944,13 @@ snapshots:
 
   picomatch@4.0.3: {}
 
-  prettier-plugin-packagejson@2.5.22(prettier@3.7.4):
+  prettier-plugin-packagejson@2.5.22(prettier@3.8.1):
     dependencies:
       sort-package-json: 3.6.0
     optionalDependencies:
-      prettier: 3.7.4
+      prettier: 3.8.1
 
-  prettier@3.7.4: {}
+  prettier@3.8.1: {}
 
   printable-characters@1.0.42: {}
 
