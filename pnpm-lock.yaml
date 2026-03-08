@@ -33,8 +33,8 @@ importers:
         specifier: 4.20260219.0
         version: 4.20260219.0
       hono:
-        specifier: 4.12.0
-        version: 4.12.0
+        specifier: 4.12.5
+        version: 4.12.5
       wrangler:
         specifier: 3.114.17
         version: 3.114.17(@cloudflare/workers-types@4.20260219.0)
@@ -453,8 +453,8 @@ packages:
   glob-to-regexp@0.4.1:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
-  hono@4.12.0:
-    resolution: {integrity: sha512-NekXntS5M94pUfiVZ8oXXK/kkri+5WpX2/Ik+LVsl+uvw+soj4roXIsPqO+XsWrAw20mOzaXOZf3Q7PfB9A/IA==}
+  hono@4.12.5:
+    resolution: {integrity: sha512-3qq+FUBtlTHhtYxbxheZgY8NIFnkkC/MR8u5TTsr7YZ3wixryQ3cCwn3iZbg8p8B88iDBBAYSfZDS75t8MN7Vg==}
     engines: {node: '>=16.9.0'}
 
   is-arrayish@0.3.4:
@@ -904,7 +904,7 @@ snapshots:
 
   glob-to-regexp@0.4.1: {}
 
-  hono@4.12.0: {}
+  hono@4.12.5: {}
 
   is-arrayish@0.3.4:
     optional: true
