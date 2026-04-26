@@ -45,7 +45,7 @@ runs:
         CLOUDFLARE_ACCOUNT_ID: ${{ inputs.cloudflare-account-id }}
         CLOUDFLARE_PROJECT_NAME: ${{ inputs.cloudflare-project-name }}
 
-    - uses: pnpm/action-setup@v3
+    - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
 
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
       with:
